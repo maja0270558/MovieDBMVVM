@@ -99,6 +99,8 @@
 		D8AB89302B315F9200359268 /* MoiveDBMVVM */ = {
 			isa = PBXGroup;
 			children = (
+				D8D4BB6B2B31626700515E9F /* Model */,
+				D8D4BB6A2B31626000515E9F /* View */,
 				D8AB89312B315F9200359268 /* AppDelegate.swift */,
 				D8AB89332B315F9200359268 /* SceneDelegate.swift */,
 				D8AB89352B315F9200359268 /* ViewController.swift */,
@@ -125,6 +127,20 @@
 				D8AB89542B315F9300359268 /* MoiveDBMVVMUITestsLaunchTests.swift */,
 			);
 			path = MoiveDBMVVMUITests;
+			sourceTree = "<group>";
+		};
+		D8D4BB6A2B31626000515E9F /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		D8D4BB6B2B31626700515E9F /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
