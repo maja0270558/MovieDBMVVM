@@ -14,7 +14,7 @@ enum RequestMethod: String {
     case PUT
 }
 
-protocol Endpoint {
+protocol Endpoint: Equatable {
     var scheme: String { get }
     var host: String { get }
     var path: String { get }

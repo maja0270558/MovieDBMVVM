@@ -47,3 +47,13 @@ extension HttpClient {
         }
     )
 }
+
+let decoder: JSONDecoder = {
+    let jsonDecoder = JSONDecoder()
+    let formatter = DateFormatter()
+    formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+    jsonDecoder.dateDecodingStrategy = .formatted(formatter)
+    jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+    return jsonDecoder
+}()
+

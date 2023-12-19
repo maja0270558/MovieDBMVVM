@@ -8,6 +8,6 @@
 import Foundation
 
 struct HttpClient {
-    var request: @Sendable (Endpoint) async throws -> (Data, URLResponse)
+    var request: @Sendable (any Endpoint) async throws -> (data: Data, response: URLResponse)
 }
 
