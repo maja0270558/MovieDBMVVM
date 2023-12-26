@@ -160,18 +160,18 @@
 		D8D4BB712B316AED00515E9F /* Feature */ = {
 			isa = PBXGroup;
 			children = (
-				D8D4BB742B316B9600515E9F /* MovieList */,
+				D8D4BB742B316B9600515E9F /* Movie */,
 			);
 			path = Feature;
 			sourceTree = "<group>";
 		};
-		D8D4BB742B316B9600515E9F /* MovieList */ = {
+		D8D4BB742B316B9600515E9F /* Movie */ = {
 			isa = PBXGroup;
 			children = (
 				D8D4BB722B316AFE00515E9F /* MovieClient.swift */,
 				D8D4BB752B316BDE00515E9F /* MovieClientLive.swift */,
 			);
-			path = MovieList;
+			path = Movie;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
