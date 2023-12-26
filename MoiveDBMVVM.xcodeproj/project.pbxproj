@@ -7,18 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D806B4422B3A9C37009B843B /* EndpointTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D806B4412B3A9C37009B843B /* EndpointTest.swift */; };
+		D806B4442B3AC1E0009B843B /* NetworkSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = D806B4432B3AC1E0009B843B /* NetworkSession.swift */; };
 		D8AB89342B315F9200359268 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8AB89332B315F9200359268 /* SceneDelegate.swift */; };
 		D8AB893B2B315F9200359268 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8AB893A2B315F9200359268 /* Assets.xcassets */; };
 		D8AB893E2B315F9200359268 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8AB893C2B315F9200359268 /* LaunchScreen.storyboard */; };
-		D8AB89492B315F9300359268 /* MoiveDBMVVMTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8AB89482B315F9300359268 /* MoiveDBMVVMTests.swift */; };
 		D8AB89532B315F9300359268 /* MoiveDBMVVMUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8AB89522B315F9300359268 /* MoiveDBMVVMUITests.swift */; };
 		D8AB89552B315F9300359268 /* MoiveDBMVVMUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8AB89542B315F9300359268 /* MoiveDBMVVMUITestsLaunchTests.swift */; };
-		D8D4BB6E2B31684200515E9F /* HttpClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D4BB6D2B31684200515E9F /* HttpClient.swift */; };
+		D8D4BB6E2B31684200515E9F /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D4BB6D2B31684200515E9F /* APIClient.swift */; };
 		D8D4BB702B31698A00515E9F /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D4BB6F2B31698A00515E9F /* Endpoint.swift */; };
-		D8D4BB732B316AFE00515E9F /* MovieListClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D4BB722B316AFE00515E9F /* MovieListClient.swift */; };
-		D8D4BB762B316BDE00515E9F /* MovieListClientLive.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D4BB752B316BDE00515E9F /* MovieListClientLive.swift */; };
-		D8D4BB782B316C2600515E9F /* HttpClientLive.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D4BB772B316C2600515E9F /* HttpClientLive.swift */; };
+		D8D4BB732B316AFE00515E9F /* MovieClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D4BB722B316AFE00515E9F /* MovieClient.swift */; };
+		D8D4BB762B316BDE00515E9F /* MovieClientLive.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D4BB752B316BDE00515E9F /* MovieClientLive.swift */; };
+		D8D4BB782B316C2600515E9F /* APIClientLive.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D4BB772B316C2600515E9F /* APIClientLive.swift */; };
 		D8D4BB7A2B316C9600515E9F /* RequestError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D4BB792B316C9600515E9F /* RequestError.swift */; };
+		D8D4BB7C2B316FCF00515E9F /* ApiClientSPY.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D4BB7B2B316FCF00515E9F /* ApiClientSPY.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,22 +41,24 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D806B4412B3A9C37009B843B /* EndpointTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndpointTest.swift; sourceTree = "<group>"; };
+		D806B4432B3AC1E0009B843B /* NetworkSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkSession.swift; sourceTree = "<group>"; };
 		D8AB892E2B315F9200359268 /* MoiveDBMVVM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MoiveDBMVVM.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8AB89332B315F9200359268 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		D8AB893A2B315F9200359268 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D8AB893D2B315F9200359268 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D8AB893F2B315F9200359268 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D8AB89442B315F9300359268 /* MoiveDBMVVMTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MoiveDBMVVMTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		D8AB89482B315F9300359268 /* MoiveDBMVVMTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoiveDBMVVMTests.swift; sourceTree = "<group>"; };
 		D8AB894E2B315F9300359268 /* MoiveDBMVVMUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MoiveDBMVVMUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8AB89522B315F9300359268 /* MoiveDBMVVMUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoiveDBMVVMUITests.swift; sourceTree = "<group>"; };
 		D8AB89542B315F9300359268 /* MoiveDBMVVMUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoiveDBMVVMUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		D8D4BB6D2B31684200515E9F /* HttpClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpClient.swift; sourceTree = "<group>"; };
+		D8D4BB6D2B31684200515E9F /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
 		D8D4BB6F2B31698A00515E9F /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
-		D8D4BB722B316AFE00515E9F /* MovieListClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListClient.swift; sourceTree = "<group>"; };
-		D8D4BB752B316BDE00515E9F /* MovieListClientLive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListClientLive.swift; sourceTree = "<group>"; };
-		D8D4BB772B316C2600515E9F /* HttpClientLive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpClientLive.swift; sourceTree = "<group>"; };
+		D8D4BB722B316AFE00515E9F /* MovieClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieClient.swift; sourceTree = "<group>"; };
+		D8D4BB752B316BDE00515E9F /* MovieClientLive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieClientLive.swift; sourceTree = "<group>"; };
+		D8D4BB772B316C2600515E9F /* APIClientLive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClientLive.swift; sourceTree = "<group>"; };
 		D8D4BB792B316C9600515E9F /* RequestError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestError.swift; sourceTree = "<group>"; };
+		D8D4BB7B2B316FCF00515E9F /* ApiClientSPY.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiClientSPY.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,7 +123,8 @@
 		D8AB89472B315F9300359268 /* MoiveDBMVVMTests */ = {
 			isa = PBXGroup;
 			children = (
-				D8AB89482B315F9300359268 /* MoiveDBMVVMTests.swift */,
+				D8D4BB7B2B316FCF00515E9F /* ApiClientSPY.swift */,
+				D806B4412B3A9C37009B843B /* EndpointTest.swift */,
 			);
 			path = MoiveDBMVVMTests;
 			sourceTree = "<group>";
@@ -143,10 +148,11 @@
 		D8D4BB6C2B31681000515E9F /* Service */ = {
 			isa = PBXGroup;
 			children = (
-				D8D4BB6D2B31684200515E9F /* HttpClient.swift */,
-				D8D4BB772B316C2600515E9F /* HttpClientLive.swift */,
+				D8D4BB6D2B31684200515E9F /* APIClient.swift */,
+				D8D4BB772B316C2600515E9F /* APIClientLive.swift */,
 				D8D4BB6F2B31698A00515E9F /* Endpoint.swift */,
 				D8D4BB792B316C9600515E9F /* RequestError.swift */,
+				D806B4432B3AC1E0009B843B /* NetworkSession.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -162,8 +168,8 @@
 		D8D4BB742B316B9600515E9F /* MovieList */ = {
 			isa = PBXGroup;
 			children = (
-				D8D4BB722B316AFE00515E9F /* MovieListClient.swift */,
-				D8D4BB752B316BDE00515E9F /* MovieListClientLive.swift */,
+				D8D4BB722B316AFE00515E9F /* MovieClient.swift */,
+				D8D4BB752B316BDE00515E9F /* MovieClientLive.swift */,
 			);
 			path = MovieList;
 			sourceTree = "<group>";
@@ -299,12 +305,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				D8D4BB7A2B316C9600515E9F /* RequestError.swift in Sources */,
-				D8D4BB6E2B31684200515E9F /* HttpClient.swift in Sources */,
+				D8D4BB6E2B31684200515E9F /* APIClient.swift in Sources */,
 				D8D4BB702B31698A00515E9F /* Endpoint.swift in Sources */,
 				D8AB89342B315F9200359268 /* SceneDelegate.swift in Sources */,
-				D8D4BB762B316BDE00515E9F /* MovieListClientLive.swift in Sources */,
-				D8D4BB782B316C2600515E9F /* HttpClientLive.swift in Sources */,
-				D8D4BB732B316AFE00515E9F /* MovieListClient.swift in Sources */,
+				D8D4BB762B316BDE00515E9F /* MovieClientLive.swift in Sources */,
+				D806B4442B3AC1E0009B843B /* NetworkSession.swift in Sources */,
+				D8D4BB782B316C2600515E9F /* APIClientLive.swift in Sources */,
+				D8D4BB732B316AFE00515E9F /* MovieClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -312,7 +319,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D8AB89492B315F9300359268 /* MoiveDBMVVMTests.swift in Sources */,
+				D806B4422B3A9C37009B843B /* EndpointTest.swift in Sources */,
+				D8D4BB7C2B316FCF00515E9F /* ApiClientSPY.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

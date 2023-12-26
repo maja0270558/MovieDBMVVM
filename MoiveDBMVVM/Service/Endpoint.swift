@@ -14,7 +14,7 @@ enum RequestMethod: String {
     case PUT
 }
 
-protocol Endpoint: Equatable {
+protocol Endpoint {
     var scheme: String { get }
     var host: String { get }
     var path: String { get }
@@ -26,6 +26,7 @@ protocol Endpoint: Equatable {
 
 extension Endpoint {
     var scheme: String { return "https" }
-    var host: String { return "/api.themoviedb.org/3/" }
+    var host: String { return "api.themoviedb.org" }
     var query: [URLQueryItem]? { return [] }
 }
+
