@@ -8,30 +8,44 @@
 import XCTest
 @testable import MoiveDBMVVM
 final class EndpointTest: XCTestCase {
+    lazy var client = makeSUT()
     
-    func makeSUT(route: Endpoint) async -> (ApiClientSPY, [URLRequest]) {
+    func makeSUT() -> ApiClientSPY {
         let apiClientSpy = ApiClientSPY()
-        let _ = try? await apiClientSpy.request(serverRoute: route)
-        return (apiClientSpy, apiClientSpy.requests)
+        return apiClientSpy
+    }
+    
+    override func tearDown() async throws {
+        client.requests.removeAll()
+    }
+    
+    private func fireRequest(_ sererRoute: Endpoint) async {
+        let _ = try? await client.request(serverRoute: sererRoute)
     }
     
     func testMoviePopularEndpoint_Request_URLMatch() async {
-        let (apiClientSpy, requests) = await makeSUT(route: MovieEndpoint.popular(page: 1))
-        XCTAssertEqual(requests.first!.url!.absoluteString, "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1")
+        await fireRequest(MovieEndpoint.popular(page: 1))
+        XCTAssertEqual(client.requests[0].url!.absoluteString, "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1")
+        await fireRequest(MovieEndpoint.popular(page: 2))
+        XCTAssertEqual(client.requests[1].url!.absoluteString, "https://api.themoviedb.org/3/movie/popular?language=en-US&page=2")
     }
     
     func testMovieUpcommingEndpoint_Request_URLMatch() async {
-        let (apiClientSpy, requests) = await makeSUT(route: MovieEndpoint.upcomming(page: 1))
-        XCTAssertEqual(requests.first!.url!.absoluteString, "https://api.themoviedb.org/3/movie/upcomming?language=en-US&page=1")
+        await fireRequest(MovieEndpoint.upcomming(page: 1))
+        XCTAssertEqual(client.requests[0].url!.absoluteString, "https://api.themoviedb.org/3/movie/upcomming?language=en-US&page=1")
+        await fireRequest(MovieEndpoint.upcomming(page: 2))
+        XCTAssertEqual(client.requests[1].url!.absoluteString, "https://api.themoviedb.org/3/movie/upcomming?language=en-US&page=2")
     }
     
     func testMovieNowPlayingEndpoint_Request_URLMatch() async {
-        let (apiClientSpy, requests) = await makeSUT(route: MovieEndpoint.nowPlaying(page: 1))
-        XCTAssertEqual(requests.first!.url!.absoluteString, "https://api.themoviedb.org/3/movie/nowplaying?language=en-US&page=1")
+        await fireRequest(MovieEndpoint.nowPlaying(page: 1))
+        XCTAssertEqual(client.requests[0].url!.absoluteString, "https://api.themoviedb.org/3/movie/nowplaying?language=en-US&page=1")
+        await fireRequest(MovieEndpoint.nowPlaying(page: 2))
+        XCTAssertEqual(client.requests[1].url!.absoluteString, "https://api.themoviedb.org/3/movie/nowplaying?language=en-US&page=2")
     }
     
     func testMovieDetailEndpoint_Request_URLMatch() async {
-        let (apiClientSpy, requests) = await makeSUT(route: MovieEndpoint.movieDetail(id: 1))
-        XCTAssertEqual(requests.first!.url!.absoluteString, "https://api.themoviedb.org/3/movie/1?language=en-US")
+        let _ = try? await client.request(serverRoute: MovieEndpoint.movieDetail(id: 1))
+        XCTAssertEqual(client.requests.first!.url!.absoluteString, "https://api.themoviedb.org/3/movie/1?language=en-US")
     }
 }
