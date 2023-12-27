@@ -5,7 +5,7 @@
 //  Created by DjangoLin on 2023/12/19.
 //
 
-enum RequestError: Error {
+public enum RequestError: Error {
     case decode
     case invalidURL
     case noResponse

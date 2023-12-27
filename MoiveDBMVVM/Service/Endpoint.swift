@@ -6,6 +6,7 @@
 //
 
 import Foundation
+
 enum RequestMethod: String {
     case DELETE
     case GET

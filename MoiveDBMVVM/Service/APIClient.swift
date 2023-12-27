@@ -8,9 +8,10 @@
 import Foundation
 
 public struct ApiClient {
+    
     public var apiRequest: @Sendable (Api) async throws -> (Data, URLResponse)
-
-    func request(
+    
+    public func request(
         serverRoute route: Api
     ) async throws -> (Data, URLResponse) {
         do {
@@ -44,20 +45,18 @@ public struct ApiClient {
         }
     }
     
-    func request<A: Decodable>(
+    public func request<A: Decodable>(
         serverRoute route: Api,
         as: A.Type
-    ) async throws -> A {
+    ) async -> Result<A, Error> {
         do {
             let (data, _) = try await request(serverRoute: route)
-            return try apiDecode(A.self, from: data)
+            return .success(try apiDecode(A.self, from: data))
         } catch {
-            throw error
+            return .failure(error)
         }
     }
-    
 }
-
 
 
 public func apiDecode<A: Decodable>(

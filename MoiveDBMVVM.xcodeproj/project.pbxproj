@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		D806B4422B3A9C37009B843B /* EndpointTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D806B4412B3A9C37009B843B /* EndpointTest.swift */; };
-		D806B4442B3AC1E0009B843B /* NetworkSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = D806B4432B3AC1E0009B843B /* NetworkSession.swift */; };
-		D806B4462B3BD479009B843B /* MovieClientTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D806B4452B3BD479009B843B /* MovieClientTest.swift */; };
 		D806B4482B3C21C8009B843B /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D806B4472B3C21C8009B843B /* Helpers.swift */; };
 		D8AB89342B315F9200359268 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8AB89332B315F9200359268 /* SceneDelegate.swift */; };
 		D8AB893B2B315F9200359268 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8AB893A2B315F9200359268 /* Assets.xcassets */; };
@@ -22,7 +20,6 @@
 		D8D4BB762B316BDE00515E9F /* MovieClientLive.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D4BB752B316BDE00515E9F /* MovieClientLive.swift */; };
 		D8D4BB782B316C2600515E9F /* APIClientLive.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D4BB772B316C2600515E9F /* APIClientLive.swift */; };
 		D8D4BB7A2B316C9600515E9F /* RequestError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D4BB792B316C9600515E9F /* RequestError.swift */; };
-		D8D4BB7C2B316FCF00515E9F /* ApiClientSPY.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D4BB7B2B316FCF00515E9F /* ApiClientSPY.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,8 +41,6 @@
 
 /* Begin PBXFileReference section */
 		D806B4412B3A9C37009B843B /* EndpointTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndpointTest.swift; sourceTree = "<group>"; };
-		D806B4432B3AC1E0009B843B /* NetworkSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkSession.swift; sourceTree = "<group>"; };
-		D806B4452B3BD479009B843B /* MovieClientTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieClientTest.swift; sourceTree = "<group>"; };
 		D806B4472B3C21C8009B843B /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		D8AB892E2B315F9200359268 /* MoiveDBMVVM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MoiveDBMVVM.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8AB89332B315F9200359268 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -62,7 +57,6 @@
 		D8D4BB752B316BDE00515E9F /* MovieClientLive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieClientLive.swift; sourceTree = "<group>"; };
 		D8D4BB772B316C2600515E9F /* APIClientLive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClientLive.swift; sourceTree = "<group>"; };
 		D8D4BB792B316C9600515E9F /* RequestError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestError.swift; sourceTree = "<group>"; };
-		D8D4BB7B2B316FCF00515E9F /* ApiClientSPY.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiClientSPY.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,9 +121,7 @@
 		D8AB89472B315F9300359268 /* MoiveDBMVVMTests */ = {
 			isa = PBXGroup;
 			children = (
-				D8D4BB7B2B316FCF00515E9F /* ApiClientSPY.swift */,
 				D806B4412B3A9C37009B843B /* EndpointTest.swift */,
-				D806B4452B3BD479009B843B /* MovieClientTest.swift */,
 			);
 			path = MoiveDBMVVMTests;
 			sourceTree = "<group>";
@@ -155,7 +147,6 @@
 			children = (
 				D8D4BB6D2B31684200515E9F /* APIClient.swift */,
 				D8D4BB772B316C2600515E9F /* APIClientLive.swift */,
-				D806B4432B3AC1E0009B843B /* NetworkSession.swift */,
 				D8D4BB6F2B31698A00515E9F /* Endpoint.swift */,
 				D8D4BB792B316C9600515E9F /* RequestError.swift */,
 				D806B4472B3C21C8009B843B /* Helpers.swift */,
@@ -316,7 +307,6 @@
 				D8AB89342B315F9200359268 /* SceneDelegate.swift in Sources */,
 				D806B4482B3C21C8009B843B /* Helpers.swift in Sources */,
 				D8D4BB762B316BDE00515E9F /* MovieClientLive.swift in Sources */,
-				D806B4442B3AC1E0009B843B /* NetworkSession.swift in Sources */,
 				D8D4BB782B316C2600515E9F /* APIClientLive.swift in Sources */,
 				D8D4BB732B316AFE00515E9F /* MovieClient.swift in Sources */,
 			);
@@ -326,9 +316,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D806B4462B3BD479009B843B /* MovieClientTest.swift in Sources */,
 				D806B4422B3A9C37009B843B /* EndpointTest.swift in Sources */,
-				D8D4BB7C2B316FCF00515E9F /* ApiClientSPY.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
