@@ -7,8 +7,12 @@
 
 import Foundation
 
-extension APIClient {
-    static var current: Self = .init(
-        session: NetworrkSession.live
-    )
+extension ApiClient {
+    static var current: Self = .init { api in
+        do {
+            return try await URLSession.shared.data(for: api.request())
+        } catch {
+            throw RequestError.unknown
+        }
+    }
 }

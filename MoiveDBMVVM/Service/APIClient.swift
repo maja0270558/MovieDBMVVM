@@ -7,32 +7,45 @@
 
 import Foundation
 
-struct APIClient {
-    var session: NetworrkSession
-    
+public struct ApiClient {
+    public var apiRequest: @Sendable (Api) async throws -> (Data, URLResponse)
+
     func request(
-        serverRoute route: Endpoint
+        serverRoute route: Api
     ) async throws -> (Data, URLResponse) {
         do {
-            let urlRequest = try self.session.createRequest(route)
-            let result = try await self.session.request(urlRequest)
+            let result = try await self.apiRequest(route)
+            
             #if DEBUG
             print(
                 """
-                API: route: \(route), \
-                status: \((result.1 as? HTTPURLResponse)?.statusCode ?? 0), \
+                ----------------------------
+                API: route: \(route)
+                status: \((result.1 as? HTTPURLResponse)?.statusCode ?? 0)
                 receive data: \(String(decoding: result.0, as: UTF8.self))
                 """
             )
             #endif
-            return result
+            
+            guard let response = result.1 as? HTTPURLResponse else {
+                throw RequestError.noResponse
+            }
+
+            switch response.statusCode {
+            case 200 ... 299:
+                return result
+            case 401:
+                throw RequestError.unauthorized
+            default:
+                throw RequestError.unexpectedStatusCode
+            }
         } catch {
             throw error
         }
     }
     
     func request<A: Decodable>(
-        serverRoute route: Endpoint,
+        serverRoute route: Api,
         as: A.Type
     ) async throws -> A {
         do {
@@ -42,7 +55,10 @@ struct APIClient {
             throw error
         }
     }
+    
 }
+
+
 
 public func apiDecode<A: Decodable>(
     _ type: A.Type,
@@ -63,3 +79,5 @@ let decoder: JSONDecoder = {
     jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
     return jsonDecoder
 }()
+
+

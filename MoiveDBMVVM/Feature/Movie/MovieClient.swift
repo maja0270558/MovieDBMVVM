@@ -8,6 +8,7 @@
 import Foundation
 
 struct MovieClient {
+    var apiClient: ApiClient = ApiClient.current
     var fetchPopular: @Sendable (_ page: Int) async throws -> MovieList
     var fetchNowPlaying: @Sendable (_ page: Int) async throws -> MovieList
     var fetchUpcomming: @Sendable (_ page: Int) async throws -> MovieList
