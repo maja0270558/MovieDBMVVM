@@ -8,12 +8,26 @@
 import Foundation
 
 extension ApiClient {
-    static var current: Self = .init { api in
-        do {
-            return try await URLSession.shared.data(for: api.request())
-        } catch {
-            throw RequestError.unknown
-        }
+    static let current: Self = .init { api in
+        return try await URLSession.shared.data(for: api.request())
     }
+    
+    public static let noop: Self = .init(apiRequest: { _ in try await Task.never() })
+
 }
 
+extension Task where Failure == Never {
+  /// An async function that never returns.
+  static func never() async throws -> Success {
+    for await element in AsyncStream<Success>.never {
+      return element
+    }
+    throw _Concurrency.CancellationError()
+  }
+}
+
+extension AsyncStream {
+  static var never: Self {
+    Self { _ in }
+  }
+}
