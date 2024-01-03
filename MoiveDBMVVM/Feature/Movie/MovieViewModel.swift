@@ -60,3 +60,8 @@ class MovieViewModel: ViewModelType {
             .eraseToAnyPublisher()
     }
 }
+
+
+struct MovieList: Decodable {
+    
+}
