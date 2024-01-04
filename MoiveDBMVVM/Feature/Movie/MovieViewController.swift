@@ -43,7 +43,7 @@ class MovieViewController: UIViewController {
             .compactMap { $0 }
             .receive(on: DispatchQueue.main)
             .sink { result in
-                print(result)
+                print(result.results)
             }
             .store(in: &cancelables)
         

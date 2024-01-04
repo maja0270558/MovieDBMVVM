@@ -19,8 +19,6 @@ public struct ApiClient {
             #if DEBUG
             let status = (result.1 as? HTTPURLResponse)?.statusCode
             let url = (result.1 as? HTTPURLResponse)?.url?.absoluteString
-
-
             print(
                 """
                 ----------------------------
