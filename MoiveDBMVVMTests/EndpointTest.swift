@@ -40,11 +40,11 @@ final class EndpointTest: XCTestCase {
     func testMovieNowPlayingEndpoint_URLMatch() async {
         expect(
             api: .movie(.nowPlaying(page: 1)),
-            equalTo: "https://api.themoviedb.org/3/movie/nowplaying?language=en-US&page=1"
+            equalTo: "https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1"
         )
         expect(
             api: .movie(.nowPlaying(page: 2)),
-            equalTo: "https://api.themoviedb.org/3/movie/nowplaying?language=en-US&page=2"
+            equalTo: "https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=2"
         )
     }
 

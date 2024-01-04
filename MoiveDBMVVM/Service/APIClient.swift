@@ -16,14 +16,24 @@ public struct ApiClient {
     ) async throws -> (Data, URLResponse) {
         do {
             let result = try await self.apiRequest(route)
-            
             #if DEBUG
+            let status = (result.1 as? HTTPURLResponse)?.statusCode
+            let url = (result.1 as? HTTPURLResponse)?.url?.absoluteString
+
+
             print(
                 """
                 ----------------------------
+                
                 API: route: \(route)
-                status: \((result.1 as? HTTPURLResponse)?.statusCode ?? 0)
+                
+                response url: \(url ?? "")
+                
+                status: \(status ?? 0)
+                
                 receive data: \(String(decoding: result.0, as: UTF8.self))
+                
+                ----------------------------
                 """
             )
             #endif

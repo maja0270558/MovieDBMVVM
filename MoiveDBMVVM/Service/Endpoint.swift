@@ -31,7 +31,12 @@ extension Endpoint {
 public enum Api: Equatable {
     var scheme: String { return "https" }
     var host: String { return "api.themoviedb.org" }
-    
+    var defaultHeaders: [String: String] {
+        return [
+            "accept": "application/json",
+            "Authorization": "***REMOVED***"
+          ]
+    }
     case movie(Movie)
     case login
     
@@ -51,7 +56,7 @@ public enum Api: Equatable {
         }
     }
     
-    func request() throws ->  URLRequest {
+    func request() throws -> URLRequest {
         var urlComponents = URLComponents()
         urlComponents.scheme = self.scheme
         urlComponents.host = self.host
@@ -64,12 +69,17 @@ public enum Api: Equatable {
 
         var request = URLRequest(url: url)
         request.httpMethod = self.method.rawValue
-        request.allHTTPHeaderFields = self.header
+        
+        let allHTTPHeaderFields = self.header?.merging(defaultHeaders, uniquingKeysWith: { old, new in
+            return new
+        })
+        
+        request.allHTTPHeaderFields = allHTTPHeaderFields
 
         if let body = self.body {
             request.httpBody = try? JSONSerialization.data(withJSONObject: body, options: [])
         }
-        
+       
         return request
     }
 }
@@ -92,7 +102,7 @@ extension Api.Movie: Endpoint {
         case .upcomming:
             return "movie/upcomming"
         case .nowPlaying:
-            return "movie/nowplaying"
+            return "movie/now_playing"
         case .detail(let id):
             return "movie/\(id)"
         }
