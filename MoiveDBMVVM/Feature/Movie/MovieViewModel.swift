@@ -16,8 +16,10 @@ protocol ViewModelType {
     var output: Output { get }
 }
 
-class MovieViewModel: ViewModelType {
+
+extension MovieViewModel: ViewModelType {
     struct Input {
+        var currentPage: Int = 1
         fileprivate var viewDidLoadRelay: PassthroughSubject<Void, Never> = .init()
         public func viewDidLoad() {
             viewDidLoadRelay.send(())
@@ -33,7 +35,9 @@ class MovieViewModel: ViewModelType {
         var movies: CurrentValueSubject<MovieList?, Never> = .init(nil)
         var alertMessage: AnyPublisher<String, Never>?
     }
+}
 
+class MovieViewModel {
     var cancelables: Set<AnyCancellable> = .init()
     var input: Input = .init()
     var output: Output = .init()
@@ -45,8 +49,8 @@ class MovieViewModel: ViewModelType {
 
     func bind() {
         let api = input.viewDidLoadRelay
-            .await {
-                await ApiClient.current.request(serverRoute: .movie(.nowPlaying(page: 1)),
+            .await { [unowned self] _ in
+                await ApiClient.current.request(serverRoute: .movie(.nowPlaying(page: self.input.currentPage)),
                                                 as: MovieList.self)
             }
             .share()
