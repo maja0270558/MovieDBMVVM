@@ -20,6 +20,7 @@ protocol ViewModelType {
 extension MovieViewModel: ViewModelType {
     struct Input {
         var currentPage: Int = 1
+        
         fileprivate var viewDidLoadRelay: PassthroughSubject<Void, Never> = .init()
         public func viewDidLoad() {
             viewDidLoadRelay.send(())
@@ -29,10 +30,15 @@ extension MovieViewModel: ViewModelType {
         public func reload() {
             reloadRelay.send(())
         }
+        
+        fileprivate var loadNextPageRelay: PassthroughSubject<Void, Never> = .init()
+        public func loadNextPage() {
+            loadNextPageRelay.send(())
+        }
     }
 
     struct Output {
-        var movies: CurrentValueSubject<MovieList?, Never> = .init(nil)
+        var movies: CurrentValueSubject<[MovieList.Movie], Never> = .init([])
         var alertMessage: AnyPublisher<String, Never>?
     }
 }
@@ -56,6 +62,7 @@ class MovieViewModel {
             .share()
 
         api.compactMap { $0.success }
+            .map { $0.results }
             .assign(to: \.value, on: output.movies)
             .store(in: &cancelables)
 

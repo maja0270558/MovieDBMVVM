@@ -12,7 +12,7 @@ import Foundation
 struct MovieList: Decodable {
     let dates: Dates
     let page: Int
-    let results: [Result]
+    let results: [Movie]
     let totalPages, totalResults: Int
     
     // MARK: - Dates
@@ -21,7 +21,7 @@ struct MovieList: Decodable {
     }
     
     // MARK: - Result
-    struct Result: Decodable {
+    struct Movie: Decodable {
         let adult: Bool
         let backdropPath: String
         let id: Int
