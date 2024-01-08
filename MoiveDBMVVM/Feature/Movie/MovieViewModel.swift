@@ -44,7 +44,7 @@ class MovieViewModel {
     private(set) var currentPage = 0
     private(set) var totalPage = 0
 
-    var cancelables: Set<AnyCancellable> = .init()
+    var cancellables: Set<AnyCancellable> = .init()
     var input: Input = .init()
     var output: Output = .init()
 
@@ -78,7 +78,7 @@ class MovieViewModel {
         api.compactMap { $0.success }
             .map { $0.results }
             .assign(to: \.value, on: output.movies)
-            .store(in: &cancelables)
+            .store(in: &cancellables)
 
         output.alertMessage = api.compactMap { $0.failure }
             .map { $0.localizedDescription }
