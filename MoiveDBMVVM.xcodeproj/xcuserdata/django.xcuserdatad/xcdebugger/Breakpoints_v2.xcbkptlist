@@ -3,4 +3,69 @@
    uuid = "127AC882-7772-477E-B298-457613212ACF"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "86CBBAC0-73ED-4942-8749-520C1D0F14E6"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MoiveDBMVVM/Feature/Movie/MovieViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "73"
+            endingLineNumber = "73"
+            landmarkName = "bind()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "86CBBAC0-73ED-4942-8749-520C1D0F14E6 - b220ae0f4cceb881"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for closure #3 (Swift.Int) async -&gt; Swift.Result&lt;MoiveDBMVVM.MovieList, Swift.Error&gt; in MoiveDBMVVM.MovieViewModel.bind() -&gt; ()"
+                  moduleName = "MoiveDBMVVM"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/django/Documents/SideProject/MoiveDBMVVM/MoiveDBMVVM/Feature/Movie/MovieViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "73"
+                  endingLineNumber = "73"
+                  offsetFromSymbolStart = "80">
+               </Location>
+               <Location
+                  uuid = "86CBBAC0-73ED-4942-8749-520C1D0F14E6 - faddc5121ae2fdd0"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(2) await resume partial function for closure #3 (Swift.Int) async -&gt; Swift.Result&lt;MoiveDBMVVM.MovieList, Swift.Error&gt; in MoiveDBMVVM.MovieViewModel.bind() -&gt; ()"
+                  moduleName = "MoiveDBMVVM"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/django/Documents/SideProject/MoiveDBMVVM/MoiveDBMVVM/Feature/Movie/MovieViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "73"
+                  endingLineNumber = "73"
+                  offsetFromSymbolStart = "40">
+               </Location>
+               <Location
+                  uuid = "86CBBAC0-73ED-4942-8749-520C1D0F14E6 - d8b1cb4d786d1cb7"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(3) suspend resume partial function for closure #3 (Swift.Int) async -&gt; Swift.Result&lt;MoiveDBMVVM.MovieList, Swift.Error&gt; in MoiveDBMVVM.MovieViewModel.bind() -&gt; ()"
+                  moduleName = "MoiveDBMVVM"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/django/Documents/SideProject/MoiveDBMVVM/MoiveDBMVVM/Feature/Movie/MovieViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "73"
+                  endingLineNumber = "73"
+                  offsetFromSymbolStart = "28">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

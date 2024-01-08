@@ -10,6 +10,11 @@ import XCTest
 
 final class MovieViewModelTest: XCTestCase {
 
+    override class func setUp() {
+        super.setUp()
+        Envirment.current.api = .noop
+    }
+    
     func testMovieViewModel_initLoad_pageShouldEqualToOne() {
         let vm = MovieViewModel()
         vm.input.viewDidLoad()
