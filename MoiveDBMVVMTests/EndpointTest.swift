@@ -28,12 +28,12 @@ final class EndpointTest: XCTestCase {
 
     func testMovieUpcommingEndpoint_URLMatch() async {
         expect(
-            api: .movie(.upcomming(page: 1)),
-            equalTo: "https://api.themoviedb.org/3/movie/upcomming?language=en-US&page=1"
+            api: .movie(.upcoming(page: 1)),
+            equalTo: "https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=1"
         )
         expect(
-            api: .movie(.upcomming(page: 2)),
-            equalTo: "https://api.themoviedb.org/3/movie/upcomming?language=en-US&page=2"
+            api: .movie(.upcoming(page: 2)),
+            equalTo: "https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=2"
         )
     }
 

@@ -10,7 +10,6 @@ import Foundation
 
 // MARK: - Welcome
 struct MovieList: Decodable {
-    let dates: Dates
     let page: Int
     let results: [Movie]
     let totalPages, totalResults: Int
@@ -23,7 +22,7 @@ struct MovieList: Decodable {
     // MARK: - Result
     struct Movie: Decodable {
         let adult: Bool
-        let backdropPath: String
+        let backdropPath: String?
         let id: Int
         let originalLanguage: String
         let originalTitle, overview: String
@@ -34,6 +33,3 @@ struct MovieList: Decodable {
         let voteCount: Int
     }
 }
-
-
-

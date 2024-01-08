@@ -42,7 +42,7 @@ public enum Api: Equatable {
     
     public enum Movie: Equatable, Sendable {
         case popular(page: Int)
-        case upcomming(page: Int)
+        case upcoming(page: Int)
         case nowPlaying(page: Int)
         case detail(id: Int)
     }
@@ -99,8 +99,8 @@ extension Api.Movie: Endpoint {
         switch self {
         case .popular:
             return "movie/popular"
-        case .upcomming:
-            return "movie/upcomming"
+        case .upcoming:
+            return "movie/upcoming"
         case .nowPlaying:
             return "movie/now_playing"
         case .detail(let id):
@@ -110,7 +110,7 @@ extension Api.Movie: Endpoint {
 
     var query: [URLQueryItem]? {
         switch self {
-        case .popular(let page), .upcomming(let page), .nowPlaying(let page):
+        case .popular(let page), .upcoming(let page), .nowPlaying(let page):
             return [
                 URLQueryItem(name: "language", value: "en-US"),
                 URLQueryItem(name: "page", value: "\(page)")

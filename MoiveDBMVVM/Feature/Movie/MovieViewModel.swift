@@ -18,19 +18,14 @@ protocol ViewModelType {
 
 extension MovieViewModel: ViewModelType {
     struct Input {
-        fileprivate var viewDidLoadRelay: PassthroughSubject<Void, Never> = .init()
-        public func viewDidLoad() {
-            viewDidLoadRelay.send(())
+        fileprivate var loadMovieRelay: PassthroughSubject<MovieListCategory, Never> = .init()
+        func loadMovie(category: MovieListCategory) {
+            loadMovieRelay.send(category)
         }
-
-        fileprivate var reloadRelay: PassthroughSubject<Void, Never> = .init()
-        public func reload() {
-            reloadRelay.send(())
-        }
-
-        fileprivate var loadNextPageRelay: PassthroughSubject<Void, Never> = .init()
-        public func loadNextPage() {
-            loadNextPageRelay.send(())
+        
+        fileprivate var reloadRelay: PassthroughSubject<MovieListCategory, Never> = .init()
+        public func reload(category: MovieListCategory) {
+            reloadRelay.send(category)
         }
     }
 
@@ -40,10 +35,15 @@ extension MovieViewModel: ViewModelType {
     }
 }
 
-class MovieViewModel {
-    private(set) var currentPage = 0
-    private(set) var totalPage = 0
 
+
+struct FetchParameter {
+    var currentPage = 1
+    var totalPage = Int.max
+}
+
+class MovieViewModel {
+    var fetchParameter: [MovieListCategory: FetchParameter] = [:]
     var cancellables: Set<AnyCancellable> = .init()
     var input: Input = .init()
     var output: Output = .init()
@@ -54,24 +54,35 @@ class MovieViewModel {
     }
 
     func bind() {
-        let reload = input.reloadRelay.map { [unowned self] _ in
-            self.currentPage = 1
-            return self.currentPage
+        let reload = input.reloadRelay.map { [unowned self] type in
+            self.fetchParameter[type] = .init()
+            return type
         }
 
-        let nextPage = input.viewDidLoadRelay
-            .combineLatest(input.loadNextPageRelay)
-            .map { [unowned self] _ in
-                self.currentPage += 1
-                return self.currentPage
+        let loadMovieFromCategory = input.loadMovieRelay
+            .map { [unowned self] type in
+                let parameter = self.fetchParameter[type, default: .init()]
+                self.fetchParameter[type] = .init(currentPage: parameter.currentPage + 1)
+                return type
             }
 
-        let fetchTrigger = reload.merge(with: nextPage)
+        let fetchTrigger = reload.merge(with: loadMovieFromCategory)
 
         let api = fetchTrigger
-            .await { page in
-                await Envirment.current.api.request(serverRoute: .movie(.nowPlaying(page: page)),
-                                                    as: MovieList.self)
+            .await { [unowned self] type in
+                let page = self.fetchParameter[type]?.currentPage ?? 1
+                let route: Api
+                switch type {
+                case .nowPlaying:
+                    route = .movie(.nowPlaying(page: page))
+                case .popular:
+                    route = .movie(.popular(page: page))
+                case .upcomming:
+                    route = .movie(.upcoming(page: page))
+
+                }
+                return await Envirment.current.api.request(serverRoute: route,
+                                                           as: MovieList.self)
             }
             .share()
 
