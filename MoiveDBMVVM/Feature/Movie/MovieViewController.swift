@@ -40,10 +40,9 @@ class MovieViewController: UIViewController {
     
     func binding() {
         viewModel.output.movies
-            .compactMap { $0 }
             .receive(on: DispatchQueue.main)
             .sink { result in
-                print(result.results)
+                print(result)
             }
             .store(in: &cancelables)
         

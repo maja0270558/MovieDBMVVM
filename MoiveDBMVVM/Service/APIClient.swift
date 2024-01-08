@@ -8,9 +8,8 @@
 import Foundation
 
 public struct ApiClient {
-    
     public var apiRequest: @Sendable (Api) async throws -> (Data, URLResponse)
-    
+
     public func request(
         serverRoute route: Api
     ) async throws -> (Data, URLResponse) {
@@ -22,20 +21,20 @@ public struct ApiClient {
             print(
                 """
                 ----------------------------
-                
+
                 API: route: \(route)
-                
+
                 response url: \(url ?? "")
-                
+
                 status: \(status ?? 0)
-                
+
                 receive data: \(String(decoding: result.0, as: UTF8.self))
-                
+
                 ----------------------------
                 """
             )
             #endif
-            
+
             guard let response = result.1 as? HTTPURLResponse else {
                 throw RequestError.noResponse
             }
@@ -52,7 +51,7 @@ public struct ApiClient {
             throw error
         }
     }
-    
+
     public func request<A: Decodable>(
         serverRoute route: Api,
         as: A.Type
@@ -66,16 +65,19 @@ public struct ApiClient {
     }
 }
 
-
 public func apiDecode<A: Decodable>(
     _ type: A.Type,
     from data: Data
 ) throws -> A {
+    #if DEBUG
+    return try! decoder.decode(A.self, from: data)
+    #else
     do {
         return try decoder.decode(A.self, from: data)
     } catch let decodingError {
         throw decodingError
     }
+    #endif
 }
 
 let decoder: JSONDecoder = {
@@ -86,5 +88,3 @@ let decoder: JSONDecoder = {
     jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
     return jsonDecoder
 }()
-
-

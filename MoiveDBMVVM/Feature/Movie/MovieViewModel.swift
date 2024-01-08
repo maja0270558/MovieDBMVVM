@@ -16,11 +16,8 @@ protocol ViewModelType {
     var output: Output { get }
 }
 
-
 extension MovieViewModel: ViewModelType {
     struct Input {
-        var currentPage: Int = 1
-        
         fileprivate var viewDidLoadRelay: PassthroughSubject<Void, Never> = .init()
         public func viewDidLoad() {
             viewDidLoadRelay.send(())
@@ -30,7 +27,7 @@ extension MovieViewModel: ViewModelType {
         public func reload() {
             reloadRelay.send(())
         }
-        
+
         fileprivate var loadNextPageRelay: PassthroughSubject<Void, Never> = .init()
         public func loadNextPage() {
             loadNextPageRelay.send(())
@@ -44,6 +41,9 @@ extension MovieViewModel: ViewModelType {
 }
 
 class MovieViewModel {
+    private(set) var currentPage = 0
+    private(set) var totalPage = 0
+
     var cancelables: Set<AnyCancellable> = .init()
     var input: Input = .init()
     var output: Output = .init()
@@ -54,10 +54,24 @@ class MovieViewModel {
     }
 
     func bind() {
-        let api = input.viewDidLoadRelay
-            .await { [unowned self] _ in
-                await ApiClient.current.request(serverRoute: .movie(.nowPlaying(page: self.input.currentPage)),
-                                                as: MovieList.self)
+        let reload = input.reloadRelay.map { [unowned self] _ in
+            self.currentPage = 1
+            return self.currentPage
+        }
+
+        let nextPage = input.viewDidLoadRelay
+            .merge(with: input.loadNextPageRelay)
+            .map { [unowned self] _ in
+                self.currentPage += 1
+                return self.currentPage
+            }
+
+        let fetchTrigger = reload.merge(with: nextPage)
+
+        let api = fetchTrigger
+            .await { page in
+                await Envirment.current.api.request(serverRoute: .movie(.nowPlaying(page: page)),
+                                                    as: MovieList.self)
             }
             .share()
 

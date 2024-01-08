@@ -25,7 +25,7 @@ struct MovieList: Decodable {
         let adult: Bool
         let backdropPath: String
         let id: Int
-        let originalLanguage: OriginalLanguage
+        let originalLanguage: String
         let originalTitle, overview: String
         let popularity: Double
         let posterPath, releaseDate, title: String
@@ -33,13 +33,6 @@ struct MovieList: Decodable {
         let voteAverage: Double
         let voteCount: Int
     }
-    
-    enum OriginalLanguage: String, Decodable {
-        case en
-        case ja
-        case tl
-    }
-
 }
 
 
