@@ -60,7 +60,7 @@ class MovieViewModel {
         }
 
         let nextPage = input.viewDidLoadRelay
-            .merge(with: input.loadNextPageRelay)
+            .combineLatest(input.loadNextPageRelay)
             .map { [unowned self] _ in
                 self.currentPage += 1
                 return self.currentPage
