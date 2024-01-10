@@ -22,7 +22,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         options connectionOptions: UIScene.ConnectionOptions
     ) {
         self.window = (scene as? UIWindowScene).map { UIWindow(windowScene: $0) }
-        self.window?.rootViewController = UINavigationController(rootViewController: MovieViewController())
+        self.window?.rootViewController = UIViewController()
+//        self.window?.rootViewController = UINavigationController(rootViewController: MovieViewController())
         self.window?.makeKeyAndVisible()
     }
 }

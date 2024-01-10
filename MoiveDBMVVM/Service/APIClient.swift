@@ -69,15 +69,11 @@ public func apiDecode<A: Decodable>(
     _ type: A.Type,
     from data: Data
 ) throws -> A {
-    #if DEBUG
-    return try! decoder.decode(A.self, from: data)
-    #else
     do {
         return try decoder.decode(A.self, from: data)
     } catch let decodingError {
         throw decodingError
     }
-    #endif
 }
 
 let decoder: JSONDecoder = {

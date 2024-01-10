@@ -12,7 +12,9 @@ extension ApiClient {
         return try await URLSession.shared.data(for: api.request())
     }
     
-    public static let noop: Self = .init(apiRequest: { _ in try await Task.never() })
+    public static let noop: Self = .init(apiRequest: { _ in
+        try await Task.never()
+    })
 
 }
 

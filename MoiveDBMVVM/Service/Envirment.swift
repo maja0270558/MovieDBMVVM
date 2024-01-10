@@ -9,14 +9,7 @@ import Foundation
 
 struct Envirment {
     var api: ApiClient
+    var aTestString = "live  😁"
 }
 
-extension Envirment {
-    static var current: Self = .live
-}
-
-extension Envirment {
-    static let live: Self = {
-        Envirment(api: .current)
-    }()
-}
+var Current = Envirment(api: .current)

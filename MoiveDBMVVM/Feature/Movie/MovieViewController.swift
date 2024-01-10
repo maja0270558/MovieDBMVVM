@@ -41,8 +41,17 @@ class MovieViewController: UIViewController {
         return tableView
     }()
     
-    var viewModel = MovieViewModel()
+    var viewModel: MovieViewModel!
     var cancelables: Set<AnyCancellable> = .init()
+    
+    init(viewModel: MovieViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func loadView() {
         super.loadView()
@@ -67,9 +76,9 @@ class MovieViewController: UIViewController {
     func binding() {
         segmented.publisher(for: \.selectedSegmentIndex)
             .compactMap { MovieListCategory(rawValue: $0) }
-            .sink { [weak self] type in
+            .sink { [weak self] cate in
                 guard let self = self else { return }
-                self.viewModel.input.loadMovie(category: type)
+                self.viewModel.input.switchSegement(category: cate)
             }
             .store(in: &cancelables)
         
@@ -84,7 +93,6 @@ class MovieViewController: UIViewController {
             .compactMap { $0 }
             .receive(on: DispatchQueue.main)
             .sink { _ in
-//                print(result)
             }
             .store(in: &cancelables)
     }

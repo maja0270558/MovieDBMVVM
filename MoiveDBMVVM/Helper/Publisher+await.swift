@@ -20,4 +20,18 @@ extension Publisher {
         }
         .eraseToAnyPublisher()
     }
+    
+    func awaitFilter(_ filter: @escaping (Output) async -> Bool) -> AnyPublisher<Output, Failure> {
+        flatMap { value -> Future<Output, Failure> in
+            Future { promise in
+                Task {
+                    let filterResult = await filter(value)
+                    if filterResult {
+                        promise(.success(value))
+                    }
+                }
+            }
+        }
+        .eraseToAnyPublisher()
+    }
 }
