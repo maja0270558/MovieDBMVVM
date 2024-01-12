@@ -9,6 +9,14 @@ import Foundation
 import Combine
 
 extension Publisher {
+    
+    func awaitHandleOutput(_ receiveOutput: @escaping (Output) async -> Void) -> AnyPublisher<Output, Failure> {
+        self.await { output in
+            await receiveOutput(output)
+            return output
+        }
+    }
+    
     func `await`<T>(_ transform: @escaping (Output) async -> T) -> AnyPublisher<T, Failure> {
         flatMap { value -> Future<T, Failure> in
             Future { promise in

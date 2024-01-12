@@ -9,7 +9,7 @@ import Combine
 import Foundation
 
 extension Publisher {
-    func handleOutput(_ receiveOutput: @escaping ((Self.Output) -> Void)) -> Publishers.HandleEvents<Self> {
+    func handleOutput(_ receiveOutput: @escaping (Output) -> Void) -> Publishers.HandleEvents<Self> {
         handleEvents(receiveOutput: receiveOutput)
     }
 
@@ -39,12 +39,12 @@ extension MovieViewModel: ViewModelType {
         func loadMovie(category: MovieListCategory) {
             loadMovieRelay.send(category)
         }
-        
+
         fileprivate var reloadRelay: PassthroughSubject<MovieListCategory, Never> = .init()
         public func reload(category: MovieListCategory) {
             reloadRelay.send(category)
         }
-        
+
         fileprivate var switchSegementRelay: PassthroughSubject<MovieListCategory, Never> = .init()
         public func switchSegement(category: MovieListCategory) {
             switchSegementRelay.send(category)
@@ -60,63 +60,62 @@ extension MovieViewModel: ViewModelType {
 @MainActor
 class MovieViewModel {
     var fetchData = MovieListFetchData()
-    var cancellables: Set<AnyCancellable> = .init()
+    var cancellables: Set<AnyCancellable>
     var input: Input = .init()
     var output: Output = .init()
 
-    init(input: Input = Input()) {
+    init(input: Input = Input(), cancellables: Set<AnyCancellable> = .init()) {
+        self.cancellables = cancellables
         self.input = input
         bind()
     }
 
     func bind() {
-        
         let segmentChangeAndLoad = input.switchSegementRelay.eraseToAnyPublisher()
             .awaitFilter { cate in
-                return await !self.fetchData.exist(cate)
+                await !self.fetchData.exist(cate)
             }
-            
-        
+
         let changeDataSource = input.switchSegementRelay.eraseToAnyPublisher()
             .awaitFilter { cate in
-                return await self.fetchData.exist(cate)
+                await self.fetchData.exist(cate)
             }
-            
-        
+
         let reload = Publishers.Merge(segmentChangeAndLoad, input.reloadRelay)
-            .handleOutput {  [unowned self] cate in
-                Task {
-                    await self.fetchData.reset(cate)
-                }
+            .awaitHandleOutput { [unowned self] cate in
+                await self.fetchData.reset(cate)
             }
-           
 
         let loadMovieFromCategory = input.loadMovieRelay
             .awaitFilter { cate in
-                return await self.fetchData.checkValidPage(cate)
+                await self.fetchData.checkValidPage(cate)
             }
-            .handleOutput { [weak self] cate in
-                Task {
-                    await self?.fetchData.increesePage(cate)
-                }
+            .awaitHandleOutput { [weak self] cate in
+                await self?.fetchData.increesePage(cate)
             }
-        
-        
+
         let api = Publishers.Merge(reload, loadMovieFromCategory)
-            .await { [unowned self] cate in
-                let page = await self.fetchData.currentPage(cate)
-                let route: Api = self.convertMovieCategoryToApi(category: cate, page: page)
-                let result = await Current.api.request(serverRoute: route,
-                                                                 as: MovieList.self)
-                return result
+            .map { self.convertMovieCategoryToApi(category: $0, page: 1) }
+            .flatMap { route  in
+               return Current.api.request(serverRoute: route,
+                                    as: MovieList.self)
             }
+            .subscribe(on: ImmediateScheduler.shared)
+            .receive(on: ImmediateScheduler.shared)
+            .eraseToAnyPublisher()
+//            .await { [unowned self] cate in
+//                let page = await self.fetchData.currentPage(cate)
+//                let route: Api = self.convertMovieCategoryToApi(category: cate, page: page)
+//                let result = await Current.api.request(serverRoute: route,
+//                                                       as: MovieList.self)
+//                return result
+//            }
             .share()
+  
         
         api.compactMap { $0.success }
-            .handleOutput { [weak self] value in
-                Task {
-                    await self?.fetchData.setTotalPage(value.totalPages, to: .upcomming)
-                }
+            .awaitHandleOutput { [weak self] value in
+                await self?.fetchData.setTotalPage(value.totalPages, to: .upcomming)
             }
             .map { $0.results }
             .assign(to: \.value, on: output.movies)
@@ -126,54 +125,54 @@ class MovieViewModel {
             .map { $0.localizedDescription }
             .eraseToAnyPublisher()
     }
-    
+
     fileprivate func convertMovieCategoryToApi(category: MovieListCategory, page: Int) -> Api {
         switch category {
         case .nowPlaying:
-           return .movie(.nowPlaying(page: page))
+            return .movie(.nowPlaying(page: page))
         case .popular:
-           return .movie(.popular(page: page))
+            return .movie(.popular(page: page))
         case .upcomming:
-           return .movie(.upcoming(page: page))
+            return .movie(.upcoming(page: page))
         }
     }
 }
 
 actor MovieListFetchData {
-    
     struct FetchParameter {
         var currentPage = 0
         var totalPage: Int?
     }
-    
+
     private(set) var fetchParameter: [MovieListCategory: FetchParameter] = [:]
-             
+
     func exist(_ cate: MovieListCategory) -> Bool {
         return fetchParameter[cate] != nil
     }
-    
+
     func currentPage(_ cate: MovieListCategory) -> Int {
         return fetchParameter[cate]?.currentPage ?? 1
     }
-    
+
     func checkValidPage(_ cate: MovieListCategory) -> Bool {
         guard let totalPage = fetchParameter[cate]?.totalPage,
-              let currentPage = fetchParameter[cate]?.currentPage else {
+              let currentPage = fetchParameter[cate]?.currentPage
+        else {
             return true
         }
         return totalPage > currentPage
     }
-    
-     func reset(_ cate: MovieListCategory) {
+
+    func reset(_ cate: MovieListCategory) {
         fetchParameter[cate] = .init(currentPage: 1)
     }
-    
-     func increesePage(_ cate: MovieListCategory) {
+
+    func increesePage(_ cate: MovieListCategory) {
         let parameter = fetchParameter[cate, default: .init()]
-        fetchParameter[cate] = .init(currentPage: parameter.currentPage + 1)
+        fetchParameter[cate] = .init(currentPage: parameter.currentPage + 1, totalPage: parameter.totalPage)
     }
-    
-     func setTotalPage(_ page: Int?, to: MovieListCategory) {
+
+    func setTotalPage(_ page: Int?, to: MovieListCategory) {
         fetchParameter[to]?.totalPage = page
     }
 }

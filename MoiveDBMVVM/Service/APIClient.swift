@@ -5,10 +5,11 @@
 //  Created by DjangoLin on 2023/12/19.
 //
 
+import Combine
 import Foundation
-
 public struct ApiClient {
     public var apiRequest: @Sendable (Api) async throws -> (Data, URLResponse)
+    public var apiRequestPublisher: @Sendable (Api) throws -> AnyPublisher<(data: Data, response: URLResponse), URLError>
 
     public func request(
         serverRoute route: Api
@@ -50,6 +51,35 @@ public struct ApiClient {
         } catch {
             throw error
         }
+    }
+
+    public func request<A: Decodable>(
+        serverRoute route: Api,
+        as: A.Type
+    ) -> AnyPublisher<Result<A, Error>, Never> {
+        
+        let publisher = try! self.apiRequestPublisher(route)
+            .tryMap { result in
+                guard let response = result.response as? HTTPURLResponse, response.statusCode == 200 else {
+                    throw URLError(.badServerResponse)
+                }
+                return result.data
+            }
+            .decode(type: A.self, decoder: decoder)
+            .map { .success($0) }
+            .catch { error -> AnyPublisher<Result<A, Error>, Never> in
+                switch error {
+                case is DecodingError:
+                    return Just(.failure(RequestError.decode)).eraseToAnyPublisher()
+                case is URLError:
+                    return Just(.failure(RequestError.invalidURL)).eraseToAnyPublisher()
+                default:
+                    return Just(.failure(RequestError.unknown)).eraseToAnyPublisher()
+                }
+            }
+            .eraseToAnyPublisher()
+
+        return publisher
     }
 
     public func request<A: Decodable>(

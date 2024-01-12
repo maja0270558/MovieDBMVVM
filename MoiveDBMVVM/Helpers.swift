@@ -7,10 +7,11 @@
 
 #if DEBUG
 import Foundation
+import Combine
 
 public func OK<A: Encodable>(
     _ value: A, encoder: JSONEncoder = .init()
-) async throws -> (Data, URLResponse) {
+) throws -> (Data, URLResponse) {
     (
         try encoder.encode(value),
         HTTPURLResponse(
@@ -19,7 +20,7 @@ public func OK<A: Encodable>(
     )
 }
 
-public func OK(_ jsonObject: Any) async throws -> (Data, URLResponse) {
+public func OK(_ jsonObject: Any) throws -> (Data, URLResponse) {
     (
         try JSONSerialization.data(withJSONObject: jsonObject, options: []),
         HTTPURLResponse(
@@ -29,6 +30,20 @@ public func OK(_ jsonObject: Any) async throws -> (Data, URLResponse) {
 }
 
 public extension ApiClient {
+    
+    mutating func override(
+        route  matchingRoute: Api,
+        withPublisher response: @escaping @Sendable () throws -> AnyPublisher<(data: Data, response: URLResponse), URLError>
+    )  {
+        self.apiRequestPublisher = { [self] route in
+            if route == matchingRoute {
+                return try response()
+            } else {
+                return try self.apiRequestPublisher(route)
+            }
+        }
+    }
+    
     mutating func override(
         route matchingRoute: Api,
         withResponse response: @escaping @Sendable () async throws -> (Data, URLResponse)
@@ -43,3 +58,5 @@ public extension ApiClient {
     }
 }
 #endif
+
+

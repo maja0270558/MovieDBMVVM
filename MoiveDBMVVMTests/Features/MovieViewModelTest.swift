@@ -5,151 +5,118 @@
 //  Created by DjangoLin on 2024/1/5.
 //
 
+import Combine
 @testable import MoiveDBMVVM
 import XCTest
-import Combine
-
-extension XCTestCase {
-    func awaitPublisher<T: Publisher>(
-        _ publisher: T,
-        timeout: TimeInterval = 10,
-        file: StaticString = #file,
-        line: UInt = #line
-    ) throws -> T.Output {
-        // This time, we use Swift's Result type to keep track
-        // of the result of our Combine pipeline:
-        var result: Result<T.Output, Error>?
-        let expectation = self.expectation(description: "Awaiting publisher")
-
-        let cancellable = publisher.sink(
-            receiveCompletion: { completion in
-                switch completion {
-                case .failure(let error):
-                    result = .failure(error)
-                case .finished:
-                    break
-                }
-
-                expectation.fulfill()
-            },
-            receiveValue: { value in
-                result = .success(value)
-            }
-        )
-
-        // Just like before, we await the expectation that we
-        // created at the top of our test, and once done, we
-        // also cancel our cancellable to avoid getting any
-        // unused variable warnings:
-        waitForExpectations(timeout: timeout)
-        cancellable.cancel()
-
-        // Here we pass the original file and line number that
-        // our utility was called at, to tell XCTest to report
-        // any encountered errors at that original call site:
-        let unwrappedResult = try XCTUnwrap(
-            result,
-            "Awaited publisher did not produce any output",
-            file: file,
-            line: line
-        )
-
-        return try unwrappedResult.get()
-    }
-}
-
-extension Published.Publisher {
-    func collectNext(_ count: Int) -> AnyPublisher<[Output], Never> {
-        self.dropFirst()
-            .collect(count)
-            .first()
-            .eraseToAnyPublisher()
-    }
-}
-
-extension PassthroughSubject {
-    func collectNext(_ count: Int) -> AnyPublisher<[Output], Failure> {
-        self.collect(count)
-            .first()
-            .eraseToAnyPublisher()
-    }
-}
-
-extension AnyPublisher {
-    func collectNext(_ count: Int) -> AnyPublisher<[Output], Failure> {
-        self.collect(count)
-            .first()
-            .eraseToAnyPublisher()
-    }
-}
-
-
-extension CurrentValueSubject {
-    func collectNext(_ count: Int) -> AnyPublisher<[Output], Failure> {
-        self.dropFirst()
-            .collect(count)
-            .first()
-            .eraseToAnyPublisher()
-    }
-}
 
 @MainActor
 final class MovieViewModelTest: XCTestCase {
     var vm = MovieViewModel()
-
+    var cancellabble = Set<AnyCancellable>()
     override class func setUp() {
         super.setUp()
         Current.api = .noop
+//        let totalPage = 3
+//        for page in 1 ... totalPage {
+//            Current.api.override(route: .movie(.nowPlaying(page: page))) {
+//                try await OK(
+//                    MovieList(
+//                        page: page,
+//                        results: [.mock],
+//                        totalPages: totalPage,
+//                        totalResults: 1
+//                    )
+//                )
+//            }
+//        }
+    }
+
+    func expect(override: (desc: String,
+                           route: Api,
+                           with: Encodable),
+                when action: () -> Void,
+                then afterFullfill: () -> Void) async
+    {
+        let expected = XCTestExpectation(description: override.desc)
+        Current.api.override(route: override.route) {
+            expected.fulfill()
+            return try await OK(
+                override.with
+            )
+        }
+        action()
+        await fulfillment(of: [expected], timeout: 1)
+        afterFullfill()
+    }
+
+    func testMovieViewModel_loadPageCorrect() async {
+        await expect(override: (desc: "Override now playing page 1",
+                                route: .movie(.nowPlaying(page: 1)),
+                                with: MovieList(
+                                    page: 1,
+                                    results: [.mock],
+                                    totalPages: 3,
+                                    totalResults: 1
+                                ))) {
+            vm.input.loadMovie(category: .nowPlaying)
+        } then: {
+            print(vm.output.movies.value)
+            XCTAssertEqual(vm.output.movies.value.count, 1)
+        }
+
+        await expect(override: (desc: "Override now playing page 2",
+                                route: .movie(.nowPlaying(page: 2)),
+                                with: MovieList(
+                                    page: 2,
+                                    results: [.mock, .mock],
+                                    totalPages: 3,
+                                    totalResults: 1
+                                ))) {
+            vm.input.loadMovie(category: .nowPlaying)
+        } then: {
+            print(vm.output.movies.value)
+            XCTAssertEqual(vm.output.movies.value.count, 2)
+        }
+    }
+
+    func testMovieViewModel_initLoad_pageShouldEqualToOne() async throws {
+        let spyValue = vm.output.movies.spy(&cancellabble)
+
         Current.api.override(route: .movie(.nowPlaying(page: 1))) {
-            try await OK([])
+            Just(
+                try OK(
+                    MovieList(
+                    page: 1,
+                    results: [.mock],
+                    totalPages: 1,
+                    totalResults: 1
+                )
+                )
+            )
+            .setFailureType(to: URLError.self)
+            .eraseToAnyPublisher()
         }
+
+        vm.input.loadMovie(category: .nowPlaying)
+        print(spyValue.values)
+
         Current.api.override(route: .movie(.nowPlaying(page: 2))) {
-            try await OK([])
+            Just(
+                try OK(
+                    MovieList(
+                    page: 1,
+                    results: [.mock],
+                    totalPages: 1,
+                    totalResults: 1
+                )
+                )
+            )
+            .setFailureType(to: URLError.self)
+            .eraseToAnyPublisher()
         }
-        Current.api.override(route: .movie(.nowPlaying(page: 3))) {
-            try await OK([])
-        }
-
+        vm.input.loadMovie(category: .nowPlaying)
+        
+        let page = await vm.fetchData.currentPage(.nowPlaying)
+        print(spyValue.values)
     }
-    
-    func testMovieViewModel_initLoad_pageShouldEqualToOne() throws {
-
-//        let moviePublisher = vm.output.movies.collectNext(1)
-        let alertPublisher = vm.output.alertMessage?.collectNext(3)
-
-        vm.input.loadMovie(category: .nowPlaying)
-        vm.input.loadMovie(category: .nowPlaying)
-        vm.input.loadMovie(category: .nowPlaying)
-
-//        let movie = try awaitPublisher(moviePublisher)
-        let alert = try awaitPublisher(alertPublisher!)
-
-        print(alert)
-//        XCTAssertEqual(movie.first!.count, 20)
-    }
-//    
-//    func testMovieViewModel_nextPage_pageShouldEqualToOne()  {
-//        Current.api = .noop
-//        Current.aTestString = "test 😀"
-//
-//        vm.input.loadMovie(category: .nowPlaying)
-//        XCTAssertEqual(vm.fetchData.currentPage(.nowPlaying), 1)
-//        
-//        vm.input.loadMovie(category: .nowPlaying)
-//        XCTAssertEqual(vm.fetchData.currentPage(.nowPlaying), 2)
-//    }
-//    
-//    func testMovieViewModel_reloadAfterNextPage_pageShouldEqualToOne()  {
-//        Current.api = .noop
-//        Current.aTestString = "test 😀"
-//
-//        vm.input.loadMovie(category: .nowPlaying)
-//        XCTAssertEqual(vm.fetchData.currentPage(.nowPlaying), 1)
-//        
-//        vm.input.loadMovie(category: .nowPlaying)
-//        XCTAssertEqual(vm.fetchData.currentPage(.nowPlaying), 2)
-//        
-//        vm.input.reload(category: .nowPlaying)
-//        XCTAssertEqual(vm.fetchData.currentPage(.nowPlaying), 1)
-//    }
 }

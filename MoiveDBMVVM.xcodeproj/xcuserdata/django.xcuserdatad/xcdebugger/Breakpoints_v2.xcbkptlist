@@ -7,155 +7,47 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "851FB8DE-71F5-43F9-906D-EAF54CDB059A"
+            uuid = "32686443-8D84-4AA3-8878-FCC039A53765"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "MoiveDBMVVM/Service/APIClientLive.swift"
+            filePath = "MoiveDBMVVM/Feature/Movie/MovieViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "12"
-            endingLineNumber = "12"
-            landmarkName = "current"
-            landmarkType = "24">
+            startingLineNumber = "100"
+            endingLineNumber = "100"
+            landmarkName = "bind()"
+            landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "851FB8DE-71F5-43F9-906D-EAF54CDB059A - 628f4ed32e79fc9a"
+                  uuid = "32686443-8D84-4AA3-8878-FCC039A53765 - 938488fdda55d885"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "(1) suspend resume partial function for closure #1 @Sendable (MoiveDBMVVM.Api) async throws -&gt; (Foundation.Data, __C.NSURLResponse) in variable initialization expression of static MoiveDBMVVM.ApiClient.current : MoiveDBMVVM.ApiClient"
+                  symbolName = "closure #7 (MoiveDBMVVM.Api) -&gt; Combine.AnyPublisher&lt;MoiveDBMVVM.MovieList, Swift.Error&gt; in MoiveDBMVVM.MovieViewModel.bind() -&gt; ()"
                   moduleName = "MoiveDBMVVM"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/django/Documents/SideProject/MoiveDBMVVM/MoiveDBMVVM/Service/APIClientLive.swift"
+                  urlString = "file:///Users/django/Documents/SideProject/MoiveDBMVVM/MoiveDBMVVM/Feature/Movie/MovieViewModel.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "12"
-                  endingLineNumber = "12"
-                  offsetFromSymbolStart = "104">
+                  startingLineNumber = "99"
+                  endingLineNumber = "99"
+                  offsetFromSymbolStart = "64">
                </Location>
                <Location
-                  uuid = "851FB8DE-71F5-43F9-906D-EAF54CDB059A - 47f4bb45d8d8c30a"
+                  uuid = "32686443-8D84-4AA3-8878-FCC039A53765 - 938488fdda55d8a4"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "(2) await resume partial function for closure #1 @Sendable (MoiveDBMVVM.Api) async throws -&gt; (Foundation.Data, __C.NSURLResponse) in variable initialization expression of static MoiveDBMVVM.ApiClient.current : MoiveDBMVVM.ApiClient"
+                  symbolName = "closure #7 (MoiveDBMVVM.Api) -&gt; Combine.AnyPublisher&lt;MoiveDBMVVM.MovieList, Swift.Error&gt; in MoiveDBMVVM.MovieViewModel.bind() -&gt; ()"
                   moduleName = "MoiveDBMVVM"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/django/Documents/SideProject/MoiveDBMVVM/MoiveDBMVVM/Service/APIClientLive.swift"
+                  urlString = "file:///Users/django/Documents/SideProject/MoiveDBMVVM/MoiveDBMVVM/Feature/Movie/MovieViewModel.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "12"
-                  endingLineNumber = "12"
-                  offsetFromSymbolStart = "40">
-               </Location>
-               <Location
-                  uuid = "851FB8DE-71F5-43F9-906D-EAF54CDB059A - 3c4d8b0486d83c94"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(3) suspend resume partial function for closure #1 @Sendable (MoiveDBMVVM.Api) async throws -&gt; (Foundation.Data, __C.NSURLResponse) in variable initialization expression of static MoiveDBMVVM.ApiClient.current : MoiveDBMVVM.ApiClient"
-                  moduleName = "MoiveDBMVVM"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/django/Documents/SideProject/MoiveDBMVVM/MoiveDBMVVM/Service/APIClientLive.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "12"
-                  endingLineNumber = "12"
-                  offsetFromSymbolStart = "32">
-               </Location>
-               <Location
-                  uuid = "851FB8DE-71F5-43F9-906D-EAF54CDB059A - 5b6d6a90a9179c97"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(4) suspend resume partial function for closure #1 @Sendable (MoiveDBMVVM.Api) async throws -&gt; (Foundation.Data, __C.NSURLResponse) in variable initialization expression of static MoiveDBMVVM.ApiClient.current : MoiveDBMVVM.ApiClient"
-                  moduleName = "MoiveDBMVVM"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/django/Documents/SideProject/MoiveDBMVVM/MoiveDBMVVM/Service/APIClientLive.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "12"
-                  endingLineNumber = "12"
-                  offsetFromSymbolStart = "28">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "77084EE9-0745-4DDF-8AD7-07E8EF07B22C"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MoiveDBMVVM/Service/APIClientLive.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "16"
-            endingLineNumber = "16"
-            landmarkName = "noop"
-            landmarkType = "24">
-            <Locations>
-               <Location
-                  uuid = "77084EE9-0745-4DDF-8AD7-07E8EF07B22C - 95b144f3dd47fe2b"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(1) suspend resume partial function for closure #1 @Sendable (MoiveDBMVVM.Api) async throws -&gt; (Foundation.Data, __C.NSURLResponse) in variable initialization expression of static MoiveDBMVVM.ApiClient.noop : MoiveDBMVVM.ApiClient"
-                  moduleName = "MoiveDBMVVM"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/django/Documents/SideProject/MoiveDBMVVM/MoiveDBMVVM/Service/APIClientLive.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "16"
-                  endingLineNumber = "16"
-                  offsetFromSymbolStart = "80">
-               </Location>
-               <Location
-                  uuid = "77084EE9-0745-4DDF-8AD7-07E8EF07B22C - 2fdd53f872acf726"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(2) await resume partial function for closure #1 @Sendable (MoiveDBMVVM.Api) async throws -&gt; (Foundation.Data, __C.NSURLResponse) in variable initialization expression of static MoiveDBMVVM.ApiClient.noop : MoiveDBMVVM.ApiClient"
-                  moduleName = "MoiveDBMVVM"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/django/Documents/SideProject/MoiveDBMVVM/MoiveDBMVVM/Service/APIClientLive.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "16"
-                  endingLineNumber = "16"
-                  offsetFromSymbolStart = "36">
-               </Location>
-               <Location
-                  uuid = "77084EE9-0745-4DDF-8AD7-07E8EF07B22C - ef394ff9f16d32ad"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(3) suspend resume partial function for closure #1 @Sendable (MoiveDBMVVM.Api) async throws -&gt; (Foundation.Data, __C.NSURLResponse) in variable initialization expression of static MoiveDBMVVM.ApiClient.noop : MoiveDBMVVM.ApiClient"
-                  moduleName = "MoiveDBMVVM"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/django/Documents/SideProject/MoiveDBMVVM/MoiveDBMVVM/Service/APIClientLive.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "16"
-                  endingLineNumber = "16"
-                  offsetFromSymbolStart = "28">
-               </Location>
-               <Location
-                  uuid = "77084EE9-0745-4DDF-8AD7-07E8EF07B22C - cd854d840398156c"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(4) suspend resume partial function for closure #1 @Sendable (MoiveDBMVVM.Api) async throws -&gt; (Foundation.Data, __C.NSURLResponse) in variable initialization expression of static MoiveDBMVVM.ApiClient.noop : MoiveDBMVVM.ApiClient"
-                  moduleName = "MoiveDBMVVM"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/django/Documents/SideProject/MoiveDBMVVM/MoiveDBMVVM/Service/APIClientLive.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "16"
-                  endingLineNumber = "16"
-                  offsetFromSymbolStart = "36">
+                  startingLineNumber = "100"
+                  endingLineNumber = "100"
+                  offsetFromSymbolStart = "64">
                </Location>
             </Locations>
          </BreakpointContent>
