@@ -48,14 +48,16 @@ class MovieViewModel {
             .handleOutput { [weak self] in
                 self?.state.reset()
             }
+            .share()
 
         let loadMovie = input.loadMovieRelay
             .filter { [weak self] in
-                self?.state.needToLoadMore() ?? false
+                return self?.state.needToLoadMore() ?? false
             }
             .handleOutput { [weak self] _ in
                 self?.state.increesePage()
             }
+            .share()
 
         let api = Publishers.Merge(reload, loadMovie)
             .flatMap { [unowned self] _ in
@@ -76,8 +78,11 @@ class MovieViewModel {
                 self?.state.setTotalPage(value.totalPages)
             }
             .map { $0.results }
-            // TODO: strong retain here
-            .assign(to: \.value, on: output.movies)
+            .sink(receiveValue: { [weak self] movies in
+                var output: [MovieList.Movie] = self?.output.movies.value ?? []
+                output.append(contentsOf: movies)
+                self?.output.movies.send(movies)
+            })
             .store(in: &cancellables)
 
         output.alertMessage = api.compactMap { $0.failure }
@@ -100,7 +105,7 @@ struct MovieViewModelState {
     }
 
     mutating func reset() {
-        currentPage = 0
+        currentPage = 1
         totalPage = nil
     }
 

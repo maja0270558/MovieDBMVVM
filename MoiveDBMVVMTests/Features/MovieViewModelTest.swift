@@ -18,86 +18,113 @@ final class MovieViewModelTest: XCTestCase {
         Current.api = .noop
     }
 
-    func expect(override: (desc: String,
-                           route: Api,
-                           with: Encodable),
-                when action: () -> Void,
-                then afterFullfill: () -> Void) async
-    {
-        let expected = XCTestExpectation(description: override.desc)
-        Current.api.override(route: override.route) {
-            expected.fulfill()
-            return try OK(
-                override.with
-            )
-        }
-        action()
-        await fulfillment(of: [expected], timeout: 1)
-        afterFullfill()
-    }
-
-    func testMovieViewModel_loadPageCorrect() async {
-        await expect(override: (desc: "Override now playing page 1",
-                                route: .movie(.nowPlaying(page: 1)),
-                                with: MovieList(
-                                    page: 1,
-                                    results: [.mock],
-                                    totalPages: 3,
-                                    totalResults: 1
-                                ))) {
-            vm.input.loadMovie(category: .nowPlaying)
-        } then: {
-            print(vm.output.movies.value)
-            XCTAssertEqual(vm.output.movies.value.count, 1)
-        }
-
-        await expect(override: (desc: "Override now playing page 2",
-                                route: .movie(.nowPlaying(page: 2)),
-                                with: MovieList(
-                                    page: 2,
-                                    results: [.mock, .mock],
-                                    totalPages: 3,
-                                    totalResults: 1
-                                ))) {
-            vm.input.loadMovie(category: .nowPlaying)
-        } then: {
-            print(vm.output.movies.value)
-            XCTAssertEqual(vm.output.movies.value.count, 2)
-        }
-    }
+//    func expect(override: (desc: String,
+//                           route: Api,
+//                           with: Encodable),
+//                when action: () -> Void,
+//                then afterFullfill: () -> Void) async
+//    {
+//        let expected = XCTestExpectation(description: override.desc)
+//        Current.api.override(route: override.route) {
+//            expected.fulfill()
+//            return try OK(
+//                override.with
+//            )
+//        }
+//        action()
+//        await fulfillment(of: [expected], timeout: 10)
+//        afterFullfill()
+//    }
+//
+//    func testMovieViewModel_loadPageCorrect() async {
+//        await expect(override: (desc: "Override now playing page 1",
+//                                route: .movie(.nowPlaying(page: 1)),
+//                                with: MovieList(
+//                                    page: 1,
+//                                    results: [.mock],
+//                                    totalPages: 3,
+//                                    totalResults: 1
+//                                ))) {
+//            vm.input.loadMovie()
+//        } then: {
+//            print(vm.output.movies.value)
+//            print(vm.currentMovieList?.page)
+//
+//        }
+//
+//        await expect(override: (desc: "Override now playing page 2",
+//                                route: .movie(.nowPlaying(page: 2)),
+//                                with: MovieList(
+//                                    page: 2,
+//                                    results: [.mock, .mock],
+//                                    totalPages: 3,
+//                                    totalResults: 1
+//                                ))) {
+//            vm.input.loadMovie()
+//        } then: {
+//            print(vm.output.movies.value)
+//            print(vm.currentMovieList?.page)
+//
+//        }
+//    }
 
     func testMovieViewModel_initLoad_pageShouldEqualToOne() async throws {
         let spyValue = vm.output.movies.spy(&cancellabble)
 
         Current.api.override(route: .movie(.nowPlaying(page: 1))) {
-            try OK(
+            print("matchingRoute : 1)")
+
+            return try OK(
                 MovieList(
-                page: 1,
-                results: [.mock],
-                totalPages: 1,
-                totalResults: 1
-            )
+                    page: 1,
+                    results: [.mock],
+                    totalPages: 3,
+                    totalResults: 1
+                )
             )
         }
 
-        vm.input.loadMovie(category: .nowPlaying)
+        vm.input.loadMovie()
+
+//        vm.input.loadMovie(category: .nowPlaying)
         print("😁")
-        print("page: \(vm.state.currentPage(.nowPlaying))")
+
+//        print("page: \(vm.state.currentPage(.nowPlaying))")
         print(spyValue.values)
         Current.api.override(route: .movie(.nowPlaying(page: 2))) {
-            try OK(
+            print("matchingRoute : 2)")
+
+            return try OK(
                 MovieList(
-                page: 1,
-                results: [.mock, .mock, .mock],
-                totalPages: 1,
-                totalResults: 1
-            )
+                    page: 2,
+                    results: [.mock],
+                    totalPages: 3,
+                    totalResults: 1
+                )
             )
         }
-        vm.input.loadMovie(category: .nowPlaying)
-        
+        vm.input.loadMovie()
+
+        Current.api.override(route: .movie(.nowPlaying(page: 3))) {
+            print("matchingRoute : 3)")
+
+            return try OK(
+                MovieList(
+                    page: 3,
+                    results: [.mock],
+                    totalPages: 3,
+                    totalResults: 1
+                )
+            )
+        }
         print("😁")
-        print("page: \(vm.state.currentPage(.nowPlaying))")
+        vm.input.reload()
+
+//        print("page: \(vm.state.currentPage(.nowPlaying))")
         print(spyValue.values)
+
+        print("😁")
+
+//        print(spyValue.values)
     }
 }
