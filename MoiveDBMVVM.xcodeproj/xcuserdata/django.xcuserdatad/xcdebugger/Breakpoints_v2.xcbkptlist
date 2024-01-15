@@ -7,49 +7,33 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "32686443-8D84-4AA3-8878-FCC039A53765"
+            uuid = "3022F779-60AD-49C1-AC12-1C1A427616D7"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "MoiveDBMVVM/Feature/Movie/MovieViewModel.swift"
+            filePath = "MoiveDBMVVM/Helpers.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "100"
-            endingLineNumber = "100"
-            landmarkName = "bind()"
+            startingLineNumber = "40"
+            endingLineNumber = "40"
+            landmarkName = "override(route:withPublisher:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "32686443-8D84-4AA3-8878-FCC039A53765 - 938488fdda55d885"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #7 (MoiveDBMVVM.Api) -&gt; Combine.AnyPublisher&lt;MoiveDBMVVM.MovieList, Swift.Error&gt; in MoiveDBMVVM.MovieViewModel.bind() -&gt; ()"
-                  moduleName = "MoiveDBMVVM"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/django/Documents/SideProject/MoiveDBMVVM/MoiveDBMVVM/Feature/Movie/MovieViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "99"
-                  endingLineNumber = "99"
-                  offsetFromSymbolStart = "64">
-               </Location>
-               <Location
-                  uuid = "32686443-8D84-4AA3-8878-FCC039A53765 - 938488fdda55d8a4"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #7 (MoiveDBMVVM.Api) -&gt; Combine.AnyPublisher&lt;MoiveDBMVVM.MovieList, Swift.Error&gt; in MoiveDBMVVM.MovieViewModel.bind() -&gt; ()"
-                  moduleName = "MoiveDBMVVM"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/django/Documents/SideProject/MoiveDBMVVM/MoiveDBMVVM/Feature/Movie/MovieViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "100"
-                  endingLineNumber = "100"
-                  offsetFromSymbolStart = "64">
-               </Location>
-            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "0A5C9507-FB98-47B3-9C05-F4E874E203B1"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MoiveDBMVVM/Helpers.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "39"
+            endingLineNumber = "39"
+            landmarkName = "override(route:withPublisher:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

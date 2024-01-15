@@ -32,27 +32,18 @@ public func OK(_ jsonObject: Any) throws -> (Data, URLResponse) {
 public extension ApiClient {
     
     mutating func override(
-        route  matchingRoute: Api,
-        withPublisher response: @escaping @Sendable () throws -> AnyPublisher<(data: Data, response: URLResponse), URLError>
-    )  {
-        self.apiRequestPublisher = { [self] route in
-            if route == matchingRoute {
-                return try response()
-            } else {
-                return try self.apiRequestPublisher(route)
-            }
-        }
-    }
-    
-    mutating func override(
         route matchingRoute: Api,
-        withResponse response: @escaping @Sendable () async throws -> (Data, URLResponse)
-    ) {
-        self.apiRequest = { @Sendable [self] route in
+        withResponse response: @escaping @Sendable () throws -> (Data, URLResponse)
+    )  {
+        self.sessionDataTaskPublisher = { [self] route in
             if route == matchingRoute {
-                return try await response()
+                return Just(
+                    try response()
+                )
+                .setFailureType(to: URLError.self)
+                .eraseToAnyPublisher()
             } else {
-                return try await self.apiRequest(route)
+                return try self.sessionDataTaskPublisher(route)
             }
         }
     }

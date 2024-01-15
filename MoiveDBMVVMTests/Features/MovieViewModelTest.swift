@@ -16,19 +16,6 @@ final class MovieViewModelTest: XCTestCase {
     override class func setUp() {
         super.setUp()
         Current.api = .noop
-//        let totalPage = 3
-//        for page in 1 ... totalPage {
-//            Current.api.override(route: .movie(.nowPlaying(page: page))) {
-//                try await OK(
-//                    MovieList(
-//                        page: page,
-//                        results: [.mock],
-//                        totalPages: totalPage,
-//                        totalResults: 1
-//                    )
-//                )
-//            }
-//        }
     }
 
     func expect(override: (desc: String,
@@ -40,7 +27,7 @@ final class MovieViewModelTest: XCTestCase {
         let expected = XCTestExpectation(description: override.desc)
         Current.api.override(route: override.route) {
             expected.fulfill()
-            return try await OK(
+            return try OK(
                 override.with
             )
         }
@@ -83,40 +70,34 @@ final class MovieViewModelTest: XCTestCase {
         let spyValue = vm.output.movies.spy(&cancellabble)
 
         Current.api.override(route: .movie(.nowPlaying(page: 1))) {
-            Just(
-                try OK(
-                    MovieList(
-                    page: 1,
-                    results: [.mock],
-                    totalPages: 1,
-                    totalResults: 1
-                )
-                )
+            try OK(
+                MovieList(
+                page: 1,
+                results: [.mock],
+                totalPages: 1,
+                totalResults: 1
             )
-            .setFailureType(to: URLError.self)
-            .eraseToAnyPublisher()
+            )
         }
 
         vm.input.loadMovie(category: .nowPlaying)
+        print("😁")
+        print("page: \(vm.state.currentPage(.nowPlaying))")
         print(spyValue.values)
-
         Current.api.override(route: .movie(.nowPlaying(page: 2))) {
-            Just(
-                try OK(
-                    MovieList(
-                    page: 1,
-                    results: [.mock],
-                    totalPages: 1,
-                    totalResults: 1
-                )
-                )
+            try OK(
+                MovieList(
+                page: 1,
+                results: [.mock, .mock, .mock],
+                totalPages: 1,
+                totalResults: 1
             )
-            .setFailureType(to: URLError.self)
-            .eraseToAnyPublisher()
+            )
         }
         vm.input.loadMovie(category: .nowPlaying)
         
-        let page = await vm.fetchData.currentPage(.nowPlaying)
+        print("😁")
+        print("page: \(vm.state.currentPage(.nowPlaying))")
         print(spyValue.values)
     }
 }

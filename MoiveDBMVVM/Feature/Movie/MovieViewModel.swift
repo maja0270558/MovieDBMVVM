@@ -8,31 +8,6 @@
 import Combine
 import Foundation
 
-extension Publisher {
-    func handleOutput(_ receiveOutput: @escaping (Output) -> Void) -> Publishers.HandleEvents<Self> {
-        handleEvents(receiveOutput: receiveOutput)
-    }
-
-    func handleError(_ receiveError: @escaping ((Self.Failure) -> Void)) -> Publishers.HandleEvents<Self> {
-        handleEvents(receiveCompletion: { completion in
-            switch completion {
-            case .failure(let error):
-                receiveError(error)
-            case .finished:
-                ()
-            }
-        })
-    }
-}
-
-protocol ViewModelType {
-    associatedtype Input
-    associatedtype Output
-
-    var input: Input { get }
-    var output: Output { get }
-}
-
 extension MovieViewModel: ViewModelType {
     struct Input {
         fileprivate var loadMovieRelay: PassthroughSubject<MovieListCategory, Never> = .init()
@@ -59,7 +34,7 @@ extension MovieViewModel: ViewModelType {
 
 @MainActor
 class MovieViewModel {
-    var fetchData = MovieListFetchData()
+    var state = MovieListFetchData()
     var cancellables: Set<AnyCancellable>
     var input: Input = .init()
     var output: Output = .init()
@@ -72,50 +47,43 @@ class MovieViewModel {
 
     func bind() {
         let segmentChangeAndLoad = input.switchSegementRelay.eraseToAnyPublisher()
-            .awaitFilter { cate in
-                await !self.fetchData.exist(cate)
+            .filter { cate in
+                !self.state.exist(cate)
             }
 
         let changeDataSource = input.switchSegementRelay.eraseToAnyPublisher()
-            .awaitFilter { cate in
-                await self.fetchData.exist(cate)
+            .filter { cate in
+                self.state.exist(cate)
             }
 
         let reload = Publishers.Merge(segmentChangeAndLoad, input.reloadRelay)
-            .awaitHandleOutput { [unowned self] cate in
-                await self.fetchData.reset(cate)
+            .handleOutput { [unowned self] cate in
+                self.state.reset(cate)
             }
 
         let loadMovieFromCategory = input.loadMovieRelay
-            .awaitFilter { cate in
-                await self.fetchData.checkValidPage(cate)
+            .filter { cate in
+                self.state.checkValidPage(cate)
             }
-            .awaitHandleOutput { [weak self] cate in
-                await self?.fetchData.increesePage(cate)
+            .handleOutput { [weak self] cate in
+                self?.state.increesePage(cate)
             }
 
         let api = Publishers.Merge(reload, loadMovieFromCategory)
-            .map { self.convertMovieCategoryToApi(category: $0, page: 1) }
-            .flatMap { route  in
-               return Current.api.request(serverRoute: route,
+            .map { [unowned self] cate in
+                let page =  self.state.currentPage(cate)
+                return cate.api(page: page)
+            }
+            .flatMap { route in
+                Current.api.request(serverRoute: route,
                                     as: MovieList.self)
             }
-            .subscribe(on: ImmediateScheduler.shared)
-            .receive(on: ImmediateScheduler.shared)
             .eraseToAnyPublisher()
-//            .await { [unowned self] cate in
-//                let page = await self.fetchData.currentPage(cate)
-//                let route: Api = self.convertMovieCategoryToApi(category: cate, page: page)
-//                let result = await Current.api.request(serverRoute: route,
-//                                                       as: MovieList.self)
-//                return result
-//            }
             .share()
-  
-        
+
         api.compactMap { $0.success }
-            .awaitHandleOutput { [weak self] value in
-                await self?.fetchData.setTotalPage(value.totalPages, to: .upcomming)
+            .handleOutput { [weak self] value in
+                self?.state.setTotalPage(value.totalPages, to: .upcomming)
             }
             .map { $0.results }
             .assign(to: \.value, on: output.movies)
@@ -125,20 +93,9 @@ class MovieViewModel {
             .map { $0.localizedDescription }
             .eraseToAnyPublisher()
     }
-
-    fileprivate func convertMovieCategoryToApi(category: MovieListCategory, page: Int) -> Api {
-        switch category {
-        case .nowPlaying:
-            return .movie(.nowPlaying(page: page))
-        case .popular:
-            return .movie(.popular(page: page))
-        case .upcomming:
-            return .movie(.upcoming(page: page))
-        }
-    }
 }
 
-actor MovieListFetchData {
+struct MovieListFetchData {
     struct FetchParameter {
         var currentPage = 0
         var totalPage: Int?
@@ -163,16 +120,16 @@ actor MovieListFetchData {
         return totalPage > currentPage
     }
 
-    func reset(_ cate: MovieListCategory) {
+    mutating func reset(_ cate: MovieListCategory) {
         fetchParameter[cate] = .init(currentPage: 1)
     }
 
-    func increesePage(_ cate: MovieListCategory) {
+    mutating func increesePage(_ cate: MovieListCategory) {
         let parameter = fetchParameter[cate, default: .init()]
         fetchParameter[cate] = .init(currentPage: parameter.currentPage + 1, totalPage: parameter.totalPage)
     }
 
-    func setTotalPage(_ page: Int?, to: MovieListCategory) {
+    mutating func setTotalPage(_ page: Int?, to: MovieListCategory) {
         fetchParameter[to]?.totalPage = page
     }
 }

@@ -9,19 +9,13 @@ import Combine
 import Foundation
 extension ApiClient {
     static let current: Self = .init(
-        apiRequest: { api in
-            try await URLSession.shared.data(for: api.request())
-        },
-        apiRequestPublisher: { api in
+        sessionDataTaskPublisher: { api in
             try URLSession.shared.dataTaskPublisher(for: api.request()).eraseToAnyPublisher()
         }
     )
 
     public static let noop: Self = .init(
-        apiRequest: { _ in 
-            try await Task.never()
-        },
-        apiRequestPublisher: { api in
+        sessionDataTaskPublisher: { api in
             fatalError("should not get in to this")
         }
     )

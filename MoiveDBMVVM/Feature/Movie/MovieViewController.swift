@@ -23,6 +23,17 @@ enum MovieListCategory: Int, CaseIterable {
             return "Now playing"
         }
     }
+    
+    func api(page: Int) -> Api {
+        switch self {
+        case .nowPlaying:
+            return .movie(.nowPlaying(page: page))
+        case .popular:
+            return .movie(.popular(page: page))
+        case .upcomming:
+            return .movie(.upcoming(page: page))
+        }
+    }
 }
 
 class MovieViewController: UIViewController {
