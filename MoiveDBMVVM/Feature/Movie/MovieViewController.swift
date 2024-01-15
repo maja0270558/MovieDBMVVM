@@ -8,43 +8,7 @@
 import Combine
 import UIKit
 
-enum MovieListCategory: Int, CaseIterable {
-    case popular
-    case upcomming
-    case nowPlaying
-    
-    var title: String {
-        switch self {
-        case .popular:
-            return "Popular"
-        case .upcomming:
-            return "Upcomming"
-        case .nowPlaying:
-            return "Now playing"
-        }
-    }
-    
-    func api(page: Int) -> Api {
-        switch self {
-        case .nowPlaying:
-            return .movie(.nowPlaying(page: page))
-        case .popular:
-            return .movie(.popular(page: page))
-        case .upcomming:
-            return .movie(.upcoming(page: page))
-        }
-    }
-}
-
 class MovieViewController: UIViewController {
-    let initCategory: MovieListCategory = .popular
-    
-    let segmented: UISegmentedControl = {
-        let segmented = UISegmentedControl(items: MovieListCategory.allCases.map { $0.title })
-        segmented.backgroundColor = .white
-        segmented.selectedSegmentIndex = 0
-        return segmented
-    }()
     
     let tableView: UITableView = {
         let tableView = UITableView()
@@ -71,28 +35,17 @@ class MovieViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel.input.loadMovie(category: initCategory)
+        viewModel.input.loadMovie()
         binding()
     }
  
     func setupLayout() {
         view.addSubview(tableView)
-        view.addSubview(segmented)
-        segmented.autoLayout.pinTopToSafeArea()
-        segmented.autoLayout.pinHorizontalEdgesToSuperView()
-        segmented.autoLayout.equalHeight(constant: 40)
         tableView.autoLayout.fillSuperview()
     }
     
     func binding() {
-        segmented.publisher(for: \.selectedSegmentIndex)
-            .compactMap { MovieListCategory(rawValue: $0) }
-            .sink { [weak self] cate in
-                guard let self = self else { return }
-                self.viewModel.input.switchSegement(category: cate)
-            }
-            .store(in: &cancelables)
-        
+      
         viewModel.output.movies
             .receive(on: DispatchQueue.main)
             .sink { result in
@@ -107,4 +60,10 @@ class MovieViewController: UIViewController {
             }
             .store(in: &cancelables)
     }
+//    
+//    func makeDataSource() -> UITableViewDiffableDataSource<<#SectionIdentifierType: Hashable & Sendable#>, <#ItemIdentifierType: Hashable & Sendable#>> {
+//        return UITableViewDiffableDataSource(tableView: self.tableView) { tableView, indexPath, itemIdentifier in
+//            
+//        }
+//    }
 }
