@@ -30,12 +30,15 @@ extension MovieViewModel: ViewModelType {
 // TODO: manage data
 // TODO: what output will look  like
 
-@MainActor
 class MovieViewModel {
     var state = MovieViewModelState()
     var cancellables: Set<AnyCancellable>
     var input: Input = .init()
     var output: Output = .init()
+    
+    deinit {
+        print("Deinit object")
+    }
 
     init(input: Input = Input(), cancellables: Set<AnyCancellable> = .init()) {
         self.cancellables = cancellables
@@ -45,17 +48,17 @@ class MovieViewModel {
 
     func bind() {
         let reload = input.reloadRelay
-            .handleOutput { [weak self] in
-                self?.state.reset()
+            .handleOutput { [unowned self] in
+                self.state.reset()
             }
             .share()
 
         let loadMovie = input.loadMovieRelay
-            .filter { [weak self] in
-                return self?.state.needToLoadMore() ?? false
+            .filter { [unowned self] in
+                return self.state.needToLoadMore()
             }
-            .handleOutput { [weak self] _ in
-                self?.state.increesePage()
+            .handleOutput { [unowned self] _ in
+                self.state.increesePage()
             }
             .share()
 
@@ -74,14 +77,14 @@ class MovieViewModel {
             .share()
 
         api.compactMap { $0.success }
-            .handleOutput { [weak self] value in
-                self?.state.setTotalPage(value.totalPages)
+            .handleOutput { [unowned self] value in
+                self.state.setTotalPage(value.totalPages)
             }
             .map { $0.results }
-            .sink(receiveValue: { [weak self] movies in
-                var output: [MovieList.Movie] = self?.output.movies.value ?? []
+            .sink(receiveValue: { [unowned self] movies in
+                var output: [MovieList.Movie] = self.output.movies.value
                 output.append(contentsOf: movies)
-                self?.output.movies.send(movies)
+                self.output.movies.send(movies)
             })
             .store(in: &cancellables)
 
@@ -91,7 +94,6 @@ class MovieViewModel {
     }
 }
 
-@MainActor
 struct MovieViewModelState {
     private(set) var currentPage = 0
     private(set) var totalPage: Int?

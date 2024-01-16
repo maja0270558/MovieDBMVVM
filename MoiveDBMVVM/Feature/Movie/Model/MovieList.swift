@@ -34,6 +34,10 @@ struct MovieList: Codable {
     }
 }
 
+extension MovieList {
+    static let mock: Self = .init(page: 1, results: [.mock, .mock, .mock], totalPages: 3, totalResults: 3)
+}
+
 extension MovieList.Movie {
     static let mock: Self = .init(adult: false,
                                   backdropPath: nil,

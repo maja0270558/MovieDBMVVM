@@ -14,7 +14,7 @@ final class EndpointTest: XCTestCase {
         XCTAssertEqual(request?.url?.absoluteString, to)
     }
 
-    func testMoviePopularEndpoint_URLMatch() async {
+    func testMoviePopularEndpointURLMatch() async {
         expect(
             api: .movie(.popular(page: 1)),
             equalTo: "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1"
@@ -26,7 +26,7 @@ final class EndpointTest: XCTestCase {
         )
     }
 
-    func testMovieUpcommingEndpoint_URLMatch() async {
+    func testMovieUpcommingEndpointURLMatch() async {
         expect(
             api: .movie(.upcoming(page: 1)),
             equalTo: "https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=1"
@@ -37,7 +37,7 @@ final class EndpointTest: XCTestCase {
         )
     }
 
-    func testMovieNowPlayingEndpoint_URLMatch() async {
+    func testMovieNowPlayingEndpointURLMatch() async {
         expect(
             api: .movie(.nowPlaying(page: 1)),
             equalTo: "https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1"
@@ -48,7 +48,7 @@ final class EndpointTest: XCTestCase {
         )
     }
 
-    func testMovieDetailEndpoint_URLMatch() async {
+    func testMovieDetailEndpointURLMatch() async {
         expect(
             api: .movie(.detail(id: 1)),
             equalTo: "https://api.themoviedb.org/3/movie/1?language=en-US"
