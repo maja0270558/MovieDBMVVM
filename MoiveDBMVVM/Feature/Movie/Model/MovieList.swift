@@ -7,20 +7,16 @@
 
 import Foundation
 
-
-// MARK: - Welcome
 struct MovieList: Codable {
     let page: Int
     let results: [Movie]
     let totalPages, totalResults: Int
     
-    // MARK: - Dates
     struct Dates: Codable {
         let maximum, minimum: String
     }
     
-    // MARK: - Result
-    struct Movie: Codable {
+    struct Movie: Codable, Equatable, Hashable {
         let adult: Bool
         let backdropPath: String?
         let id: Int
@@ -32,24 +28,4 @@ struct MovieList: Codable {
         let voteAverage: Double
         let voteCount: Int
     }
-}
-
-extension MovieList {
-    static let mock: Self = .init(page: 1, results: [.mock, .mock, .mock], totalPages: 3, totalResults: 3)
-}
-
-extension MovieList.Movie {
-    static let mock: Self = .init(adult: false,
-                                  backdropPath: nil,
-                                  id: 1,
-                                  originalLanguage: "en",
-                                  originalTitle: "mock movie",
-                                  overview: "noop",
-                                  popularity: 0,
-                                  posterPath: "noop",
-                                  releaseDate: "",
-                                  title: "mock title",
-                                  video: false,
-                                  voteAverage: 0,
-                                  voteCount: 0)
 }

@@ -9,16 +9,13 @@ import Foundation
 import UIKit
 
 struct Layout {
-    
     let element: UIView
     
     init(_ element: UIView) {
         self.element = element
     }
     
-    // MARK: Layout
-    
-    @discardableResult func equalWidth(constant: CGFloat,multiplier: CGFloat = 1) -> NSLayoutConstraint {
+    @discardableResult func equalWidth(constant: CGFloat, multiplier: CGFloat = 1) -> NSLayoutConstraint {
         let widthConstraint = NSLayoutConstraint(item: element,
                                                  attribute: .width,
                                                  relatedBy: .equal,
@@ -31,8 +28,7 @@ struct Layout {
         return widthConstraint
     }
     
-    @discardableResult func equalWidthWithSuperView(constant: CGFloat,multiplier: CGFloat = 1) -> NSLayoutConstraint {
-        
+    @discardableResult func equalWidthWithSuperView(constant: CGFloat, multiplier: CGFloat = 1) -> NSLayoutConstraint {
         let widthConstraint = NSLayoutConstraint(item: element,
                                                  attribute: .width,
                                                  relatedBy: .equal,
@@ -45,7 +41,7 @@ struct Layout {
         return widthConstraint
     }
     
-    @discardableResult func equalHeight(constant: CGFloat,multiplier: CGFloat = 1) -> NSLayoutConstraint {
+    @discardableResult func equalHeight(constant: CGFloat, multiplier: CGFloat = 1) -> NSLayoutConstraint {
         let widthConstraint = NSLayoutConstraint(item: element,
                                                  attribute: .height,
                                                  relatedBy: .equal,
@@ -58,7 +54,7 @@ struct Layout {
         return widthConstraint
     }
     
-    @discardableResult func equalHeightWithSuperView(constant: CGFloat,multiplier: CGFloat = 1) -> NSLayoutConstraint {
+    @discardableResult func equalHeightWithSuperView(constant: CGFloat, multiplier: CGFloat = 1) -> NSLayoutConstraint {
         let widthConstraint = NSLayoutConstraint(item: element,
                                                  attribute: .height,
                                                  relatedBy: .equal,
@@ -140,7 +136,8 @@ struct Layout {
     }
     
     @discardableResult func pinTopToSafeArea(constant: CGFloat = 0,
-                                             anchor: SafeAreaAnchor = .top) -> NSLayoutConstraint {
+                                             anchor: SafeAreaAnchor = .top) -> NSLayoutConstraint
+    {
         let guide = safeSuperview().safeAreaLayoutGuide
         
         var equalTo: NSLayoutYAxisAnchor
@@ -167,7 +164,7 @@ struct Layout {
         return constraint
     }
     
-    @discardableResult func pinTopToView(view:UIView,constant: CGFloat) -> NSLayoutConstraint {
+    @discardableResult func pinTopToView(view: UIView, constant: CGFloat) -> NSLayoutConstraint {
         let constraint = NSLayoutConstraint(item: element,
                                             attribute: .top,
                                             relatedBy: .equal,
@@ -178,10 +175,11 @@ struct Layout {
         return constraint
     }
     
-    @discardableResult func pin(view:UIView,
+    @discardableResult func pin(view: UIView,
                                 constant: CGFloat,
                                 from: NSLayoutConstraint.Attribute,
-                                to: NSLayoutConstraint.Attribute) -> NSLayoutConstraint {
+                                to: NSLayoutConstraint.Attribute) -> NSLayoutConstraint
+    {
         let constraint = NSLayoutConstraint(item: element,
                                             attribute: from,
                                             relatedBy: .equal,
@@ -193,7 +191,8 @@ struct Layout {
     }
     
     @discardableResult func pinBottomToSafeArea(constant: CGFloat = 0,
-                                                anchor: SafeAreaAnchor = .bottom) -> NSLayoutConstraint {
+                                                anchor: SafeAreaAnchor = .bottom) -> NSLayoutConstraint
+    {
         let guide = safeSuperview().safeAreaLayoutGuide
         var equalTo: NSLayoutYAxisAnchor
         switch anchor {
@@ -207,7 +206,7 @@ struct Layout {
         return constraint
     }
     
-    @discardableResult func pinBottomToViewTop(view:UIView,constant: CGFloat) -> NSLayoutConstraint {
+    @discardableResult func pinBottomToViewTop(view: UIView, constant: CGFloat) -> NSLayoutConstraint {
         let constraint = NSLayoutConstraint(item: element,
                                             attribute: .bottom,
                                             relatedBy: .equal,
@@ -218,7 +217,7 @@ struct Layout {
         return constraint
     }
 
-    @discardableResult func pinBottomToView(view:UIView,constant: CGFloat) -> NSLayoutConstraint {
+    @discardableResult func pinBottomToView(view: UIView, constant: CGFloat) -> NSLayoutConstraint {
         let constraint = NSLayoutConstraint(item: element,
                                             attribute: .bottom,
                                             relatedBy: .equal,
@@ -228,7 +227,6 @@ struct Layout {
         safeSuperview().addConstraint(constraint)
         return constraint
     }
-    
     
     func fillSuperview(padding: CGFloat = 0) {
         safeSuperview()
@@ -243,9 +241,7 @@ struct Layout {
         }
         return view
     }
-    
 }
-
 
 extension UIView {
     var autoLayout: Layout {
