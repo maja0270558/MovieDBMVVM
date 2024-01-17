@@ -10,6 +10,7 @@ import Foundation
 
 extension Envirment {
     static let mock: Self = {
-        return .init(api: .noop)
+        return .init(api: .noop,
+                     imageProvider: .mock)
     }()
 }

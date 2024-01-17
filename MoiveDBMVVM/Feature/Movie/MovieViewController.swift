@@ -9,6 +9,10 @@ import Combine
 import UIKit
 
 class MovieViewController: UIViewController {
+    enum MovieListSection: Int {
+        case list
+    }
+    
     let collectionView: UICollectionView = {
         var listConfiguration = UICollectionLayoutListConfiguration(appearance: .sidebarPlain)
         let layout = UICollectionViewCompositionalLayout.list(using: listConfiguration)
@@ -52,10 +56,11 @@ class MovieViewController: UIViewController {
     func binding() {
         viewModel.output.movies
             .receive(on: DispatchQueue.main)
-            .sink { result in
+            .sink { [weak self] result in
+                guard let self = self else { return }
                 self.sectionSnapshot.deleteAll()
                 self.sectionSnapshot.append(result)
-                self.dataSource.apply(self.sectionSnapshot, to: "Root", animatingDifferences: true, completion: nil)
+                self.dataSource.apply(self.sectionSnapshot, to: MovieListSection.list, animatingDifferences: true, completion: nil)
             }
             .store(in: &cancelables)
         
@@ -67,15 +72,13 @@ class MovieViewController: UIViewController {
             .store(in: &cancelables)
     }
 
-    func makeDataSource() -> UICollectionViewDiffableDataSource<String, MovieList.Movie> {
-        let cellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, MovieList.Movie> { cell, _, item in
-            var content = cell.defaultContentConfiguration()
-            content.text = item.title
-            cell.indentationLevel = 2
-            cell.contentConfiguration = content
+    func makeDataSource() -> UICollectionViewDiffableDataSource<MovieListSection, MovieList.Movie> {
+        let nib = UINib(nibName: "MovieCell", bundle: nil)
+        let cellRegistration = UICollectionView.CellRegistration<MovieCell, MovieList.Movie>.init(cellNib: nib) { cell, _, item in
+            cell.configure(model: item)
         }
             
-        return UICollectionViewDiffableDataSource<String, MovieList.Movie>(
+        return UICollectionViewDiffableDataSource<MovieListSection, MovieList.Movie>(
             collectionView: collectionView,
             cellProvider: { collectionView, indexPath, item in
                 let cell = collectionView.dequeueConfiguredReusableCell(

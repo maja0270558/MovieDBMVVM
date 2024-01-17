@@ -9,6 +9,10 @@ import Foundation
 
 struct Envirment {
     var api: ApiClient
+    var imageProvider: ImageFetcher
 }
 
-var Current = Envirment(api: .current)
+var Current = Envirment(
+    api: .live,
+    imageProvider: .live
+)

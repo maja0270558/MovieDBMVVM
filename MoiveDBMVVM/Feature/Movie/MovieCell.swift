@@ -12,15 +12,12 @@ class MovieCell: UICollectionViewCell {
     @IBOutlet weak var overview: UILabel!
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var image: UIImageView!
-    
+
     func configure(model: MovieList.Movie) {
+        image.layer.cornerRadius = 8
         title.text = model.title
         overview.text = model.overview
-    }
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
+        Current.imageProvider.loadImage(model.backdropPath ?? "", image)
     }
 
 }

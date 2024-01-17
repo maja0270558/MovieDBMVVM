@@ -5,22 +5,12 @@
 //  Created by DjangoLin on 2023/12/19.
 //
 
-public enum RequestError: Error {
-    case decode
+import Foundation
+
+public enum RequestError: LocalizedError {
+    case decode(message: String)
     case invalidURL
     case noResponse
-    case unauthorized
     case unexpectedStatusCode
     case unknown
-
-    var customMessage: String {
-        switch self {
-        case .decode:
-            return "Decode error"
-        case .unauthorized:
-            return "Session expired"
-        default:
-            return "Unknown error"
-        }
-    }
 }

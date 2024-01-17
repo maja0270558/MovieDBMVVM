@@ -27,9 +27,6 @@ extension MovieViewModel: ViewModelType {
     }
 }
 
-// TODO: manage data
-// TODO: what output will look  like
-
 class MovieViewModel {
     var state = MovieViewModelState()
     var cancellables: Set<AnyCancellable>
@@ -49,6 +46,7 @@ class MovieViewModel {
     func bind() {
         let reload = input.reloadRelay
             .handleOutput { [unowned self] in
+                self.output.movies.send([])
                 self.state.reset()
             }
             .share()

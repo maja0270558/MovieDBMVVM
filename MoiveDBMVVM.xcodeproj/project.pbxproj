@@ -25,6 +25,9 @@
 		D83DFDFC2B56367000DC4C25 /* MovieList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83DFDFB2B56367000DC4C25 /* MovieList.swift */; };
 		D83DFDFF2B576DFA00DC4C25 /* MovieCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83DFDFD2B576DFA00DC4C25 /* MovieCell.swift */; };
 		D83DFE002B576DFA00DC4C25 /* MovieCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D83DFDFE2B576DFA00DC4C25 /* MovieCell.xib */; };
+		D83DFE032B57716100DC4C25 /* Nuke in Frameworks */ = {isa = PBXBuildFile; productRef = D83DFE022B57716100DC4C25 /* Nuke */; };
+		D83DFE052B57716100DC4C25 /* NukeExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = D83DFE042B57716100DC4C25 /* NukeExtensions */; };
+		D83DFE072B57753A00DC4C25 /* ImageProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83DFE062B57753A00DC4C25 /* ImageProvider.swift */; };
 		D8AB89342B315F9200359268 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8AB89332B315F9200359268 /* SceneDelegate.swift */; };
 		D8AB893B2B315F9200359268 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8AB893A2B315F9200359268 /* Assets.xcassets */; };
 		D8AB893E2B315F9200359268 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8AB893C2B315F9200359268 /* LaunchScreen.storyboard */; };
@@ -63,6 +66,7 @@
 		D83DFDFB2B56367000DC4C25 /* MovieList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieList.swift; sourceTree = "<group>"; };
 		D83DFDFD2B576DFA00DC4C25 /* MovieCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieCell.swift; sourceTree = "<group>"; };
 		D83DFDFE2B576DFA00DC4C25 /* MovieCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MovieCell.xib; sourceTree = "<group>"; };
+		D83DFE062B57753A00DC4C25 /* ImageProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageProvider.swift; sourceTree = "<group>"; };
 		D8AB892E2B315F9200359268 /* MoiveDBMVVM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MoiveDBMVVM.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8AB89332B315F9200359268 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		D8AB893A2B315F9200359268 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -80,6 +84,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D83DFE032B57716100DC4C25 /* Nuke in Frameworks */,
+				D83DFE052B57716100DC4C25 /* NukeExtensions in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -191,6 +197,7 @@
 				D8D4BB6F2B31698A00515E9F /* Endpoint.swift */,
 				D8D4BB792B316C9600515E9F /* RequestError.swift */,
 				D806B45C2B4BBD05009B843B /* Envirment.swift */,
+				D83DFE062B57753A00DC4C25 /* ImageProvider.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -231,6 +238,10 @@
 			dependencies = (
 			);
 			name = MoiveDBMVVM;
+			packageProductDependencies = (
+				D83DFE022B57716100DC4C25 /* Nuke */,
+				D83DFE042B57716100DC4C25 /* NukeExtensions */,
+			);
 			productName = MoiveDBMVVM;
 			productReference = D8AB892E2B315F9200359268 /* MoiveDBMVVM.app */;
 			productType = "com.apple.product-type.application";
@@ -281,6 +292,9 @@
 				Base,
 			);
 			mainGroup = D8AB89252B315F9200359268;
+			packageReferences = (
+				D83DFE012B57716100DC4C25 /* XCRemoteSwiftPackageReference "Nuke" */,
+			);
 			productRefGroup = D8AB892F2B315F9200359268 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -323,6 +337,7 @@
 				D8D4BB6E2B31684200515E9F /* APIClient.swift in Sources */,
 				D8D4BB702B31698A00515E9F /* Endpoint.swift in Sources */,
 				D806B4512B45542A009B843B /* Result+Value.swift in Sources */,
+				D83DFE072B57753A00DC4C25 /* ImageProvider.swift in Sources */,
 				D806B4582B46A330009B843B /* MovieList.swift in Sources */,
 				D83DFDF52B54E85B00DC4C25 /* ViewModelType.swift in Sources */,
 				D8AB89342B315F9200359268 /* SceneDelegate.swift in Sources */,
@@ -620,6 +635,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		D83DFE012B57716100DC4C25 /* XCRemoteSwiftPackageReference "Nuke" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kean/Nuke";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.3.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D83DFE022B57716100DC4C25 /* Nuke */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D83DFE012B57716100DC4C25 /* XCRemoteSwiftPackageReference "Nuke" */;
+			productName = Nuke;
+		};
+		D83DFE042B57716100DC4C25 /* NukeExtensions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D83DFE012B57716100DC4C25 /* XCRemoteSwiftPackageReference "Nuke" */;
+			productName = NukeExtensions;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D8AB89262B315F9200359268 /* Project object */;
 }

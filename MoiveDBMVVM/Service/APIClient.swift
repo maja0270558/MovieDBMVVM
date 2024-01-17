@@ -26,14 +26,7 @@ public struct ApiClient {
             .decode(type: A.self, decoder: decoder)
             .map { .success($0) }
             .catch { error -> AnyPublisher<Result<A, Error>, Never> in
-                switch error {
-                case is DecodingError:
-                    return Just(.failure(RequestError.decode)).eraseToAnyPublisher()
-                case is URLError:
-                    return Just(.failure(RequestError.invalidURL)).eraseToAnyPublisher()
-                default:
-                    return Just(.failure(RequestError.unknown)).eraseToAnyPublisher()
-                }
+                return Just(.failure(error)).eraseToAnyPublisher()
             }
             .eraseToAnyPublisher()
 

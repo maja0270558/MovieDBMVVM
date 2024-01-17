@@ -8,7 +8,7 @@
 import Combine
 import Foundation
 extension ApiClient {
-    static let current: Self = .init(
+    static let live: Self = .init(
         sessionDataTaskPublisher: { api in
             try URLSession.shared.dataTaskPublisher(for: api.request()).eraseToAnyPublisher()
         }
