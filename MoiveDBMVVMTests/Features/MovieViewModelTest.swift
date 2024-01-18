@@ -74,6 +74,10 @@ final class MovieViewModelTest: XCTestCase {
         vm.input.reload()
         XCTAssertEqual(counter, 2)
     }
+    
+    func testNetworkConnectionFail() {
+        
+    }
 
     func testParsingFail() {
         let movie = vm.output.movies.spy(&cancellabble)

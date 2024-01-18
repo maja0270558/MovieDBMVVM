@@ -10,9 +10,11 @@ import Foundation
 struct Envirment {
     var api: ApiClient
     var imageProvider: ImageFetcher
+    var reachability: ReachabilityClient
 }
 
 var Current = Envirment(
     api: .live,
-    imageProvider: .live
+    imageProvider: .live,
+    reachability: .live(DispatchQueue.main)
 )
