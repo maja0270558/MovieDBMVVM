@@ -10,7 +10,12 @@ import Foundation
 extension ApiClient {
     static let live: Self = .init(
         sessionDataTaskPublisher: { api in
-            try URLSession.shared.dataTaskPublisher(for: api.request()).eraseToAnyPublisher()
+            let configuration = URLSessionConfiguration.default
+            configuration.waitsForConnectivity = true
+            configuration.timeoutIntervalForRequest = 60
+            configuration.timeoutIntervalForResource = 60 * 60
+            let session = URLSession(configuration: configuration)
+            return try session.dataTaskPublisher(for: api.request()).eraseToAnyPublisher()
         }
     )
 
