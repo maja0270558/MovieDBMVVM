@@ -38,6 +38,7 @@
 		D8D4BB7A2B316C9600515E9F /* RequestError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D4BB792B316C9600515E9F /* RequestError.swift */; };
 		D8D4F68A2B5EBDAA0053DD9C /* Dependencies in Frameworks */ = {isa = PBXBuildFile; productRef = D8D4F6892B5EBDAA0053DD9C /* Dependencies */; };
 		D8D4F68C2B5EBDAA0053DD9C /* DependenciesMacros in Frameworks */ = {isa = PBXBuildFile; productRef = D8D4F68B2B5EBDAA0053DD9C /* DependenciesMacros */; };
+		D8D4F68E2B60F9A00053DD9C /* UIViewController+alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D4F68D2B60F99F0053DD9C /* UIViewController+alert.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,6 +82,7 @@
 		D8D4BB6F2B31698A00515E9F /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
 		D8D4BB772B316C2600515E9F /* APIClientLive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClientLive.swift; sourceTree = "<group>"; };
 		D8D4BB792B316C9600515E9F /* RequestError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestError.swift; sourceTree = "<group>"; };
+		D8D4F68D2B60F99F0053DD9C /* UIViewController+alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+alert.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +115,7 @@
 				D806B4522B455445009B843B /* Publisher+await.swift */,
 				D83DFDF12B54E82300DC4C25 /* Publisher+Handle.swift */,
 				D806B4542B455757009B843B /* UIView+autolayout.swift */,
+				D8D4F68D2B60F99F0053DD9C /* UIViewController+alert.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -340,6 +343,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D8D4F68E2B60F9A00053DD9C /* UIViewController+alert.swift in Sources */,
 				D8D4BB7A2B316C9600515E9F /* RequestError.swift in Sources */,
 				D806B4552B455757009B843B /* UIView+autolayout.swift in Sources */,
 				D83DFDF22B54E82300DC4C25 /* Publisher+Handle.swift in Sources */,

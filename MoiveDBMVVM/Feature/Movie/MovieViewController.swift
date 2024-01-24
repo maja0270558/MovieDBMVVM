@@ -22,9 +22,9 @@ class MovieViewController: UIViewController {
     }()
     
     var viewModel: MovieViewModel!
-    var cancelables: Set<AnyCancellable> = .init()
+    var cancellables: Set<AnyCancellable> = .init()
     lazy var dataSource = makeDataSource()
-    var sectionSnapshot = NSDiffableDataSourceSectionSnapshot<MovieList.Movie>()
+    var sectionSnapshot = NSDiffableDataSourceSectionSnapshot<MovieCellViewModel>()
 
     init(viewModel: MovieViewModel) {
         self.viewModel = viewModel
@@ -52,6 +52,7 @@ class MovieViewController: UIViewController {
         view.addSubview(collectionView)
         collectionView.autoLayout.fillSuperview()
         collectionView.dataSource = dataSource
+        collectionView.delegate = self
     }
     
     func binding() {
@@ -64,27 +65,27 @@ class MovieViewController: UIViewController {
                 self.dataSource.apply(
                     self.sectionSnapshot,
                     to: MovieListSection.list,
-                    animatingDifferences: true,
-                    completion: nil)
+                    animatingDifferences: true)
             }
-            .store(in: &cancelables)
+            .store(in: &cancellables)
         
         viewModel.output.alertMessage
             .compactMap { $0 }
             .receive(on: DispatchQueue.main)
             .sink { [weak self] alertMessage in
                 guard let self = self else { return }
-                let alertController = UIViewController()
-                let message = UILabel()
-                message.text = alertMessage
-                alertController.view.addSubview(message)
-                message.autoLayout.fillSuperview()
-                if let sheet = alertController.sheetPresentationController {
-                    sheet.detents = [.medium()]
-                }
-                self.present(alertController, animated: true)
+                self.showAlert(alertMessage: alertMessage)
             }
-            .store(in: &cancelables)
+            .store(in: &cancellables)
+        
+        viewModel.output.isLoading
+            .filter { !$0 }
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                guard let self = self else { return }
+                self.collectionView.refreshControl?.endRefreshing()
+            }
+            .store(in: &cancellables)
     }
     
     func configureRefreshControl() {
@@ -97,16 +98,15 @@ class MovieViewController: UIViewController {
     
     @objc func handleRefreshControl() {
         viewModel.input.reload()
-        collectionView.refreshControl?.endRefreshing()
     }
 
-    func makeDataSource() -> UICollectionViewDiffableDataSource<MovieListSection, MovieList.Movie> {
+    func makeDataSource() -> UICollectionViewDiffableDataSource<MovieListSection, MovieCellViewModel> {
         let nib = UINib(nibName: "MovieCell", bundle: nil)
-        let cellRegistration = UICollectionView.CellRegistration<MovieCell, MovieList.Movie>.init(cellNib: nib) { cell, _, item in
+        let cellRegistration = UICollectionView.CellRegistration<MovieCell, MovieCellViewModel>.init(cellNib: nib) { cell, _, item in
             cell.configure(model: item)
         }
             
-        return UICollectionViewDiffableDataSource<MovieListSection, MovieList.Movie>(
+        return UICollectionViewDiffableDataSource<MovieListSection, MovieCellViewModel>(
             collectionView: collectionView,
             cellProvider: { collectionView, indexPath, item in
                 let cell = collectionView.dequeueConfiguredReusableCell(
@@ -115,5 +115,19 @@ class MovieViewController: UIViewController {
                     item: item)
                 return cell
             })
+    }
+}
+
+extension MovieViewController: UICollectionViewDelegate {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        willDisplay cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath)
+    {
+        if indexPath.row == sectionSnapshot.items.count - 1,
+           viewModel.output.isLoading.value == false
+        {
+            viewModel.input.loadMovie()
+        }
     }
 }

@@ -25,10 +25,11 @@ extension MovieViewModel: ViewModelType {
             loadMovieRelay.send(.reload)
         }
     }
-
+    
     struct Output {
-        var movies: CurrentValueSubject<[MovieList.Movie], Never> = .init([])
+        var movies: CurrentValueSubject<[MovieCellViewModel], Never> = .init([])
         var alertMessage: PassthroughSubject<String, Never> = .init()
+        var isLoading: CurrentValueSubject<Bool, Never> = .init(false)
     }
 }
 
@@ -87,7 +88,8 @@ class MovieViewModel {
     }
     
     func fetchMovies() -> AnyCancellable {
-        api.request(
+        self.output.isLoading.send(true)
+        return api.request(
             serverRoute: .movie(
                 .nowPlaying(
                     page: self.state.currentPage + 1
@@ -95,15 +97,26 @@ class MovieViewModel {
             ),
             as: MovieList.self
         )
+        .receive(on: DispatchQueue.main)
         .sink { [weak self] result in
             guard let self = self else { return }
+            self.output.isLoading.send(false)
+            
             if let error = result.failure {
                 self.output.alertMessage.send(error.localizedDescription)
                 return
             }
+            
             if let success = result.success {
                 self.state.setPage(current: success.page, success.totalPages)
-                self.output.movies.send(success.results)
+                var results = self.output.movies.value
+                let cellViewModels = success.results.compactMap  {
+                    return MovieCellViewModel(title: $0.title ?? "",
+                                              image: $0.posterPath ?? "",
+                                              overview: $0.overview)
+                }
+                results.append(contentsOf: cellViewModels)
+                self.output.movies.send(results)
             }
         }
     }

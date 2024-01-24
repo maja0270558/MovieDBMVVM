@@ -12,10 +12,6 @@ struct MovieList: Codable {
     let results: [Movie]
     let totalPages, totalResults: Int
     
-    struct Dates: Codable {
-        let maximum, minimum: String
-    }
-    
     struct Movie: Codable, Equatable, Hashable {
         let adult: Bool
         let backdropPath: String?
@@ -23,7 +19,7 @@ struct MovieList: Codable {
         let originalLanguage: String
         let originalTitle, overview: String
         let popularity: Double
-        let posterPath, releaseDate, title: String
+        let posterPath, releaseDate, title: String?
         let video: Bool
         let voteAverage: Double
         let voteCount: Int
