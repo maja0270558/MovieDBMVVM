@@ -34,7 +34,7 @@ extension MovieViewModel: ViewModelType {
 }
 
 class MovieViewModel {
-    
+    @Dependency(\.mainQueue) var queue
     @Dependency(\.api) var api
     @Dependency(\.reachability) var reachability
     @Dependency(\.test) var testString
@@ -46,10 +46,6 @@ class MovieViewModel {
     var isConnected: Bool = true
     var cancellables: Set<AnyCancellable>
     var requestCancellable: AnyCancellable?
-    
-    deinit {
-        print("Deinit object")
-    }
 
     init(input: Input = Input(), cancellables: Set<AnyCancellable> = .init()) {
         self.cancellables = cancellables
@@ -57,7 +53,7 @@ class MovieViewModel {
         bind()
     }
 
-    func bind() {
+    fileprivate func bind() {
       input.loadMovieRelay
             .handleOutput { [weak self] in
                 guard let self = self else { return }
@@ -87,8 +83,8 @@ class MovieViewModel {
             .store(in: &cancellables)
     }
     
-    func fetchMovies() -> AnyCancellable {
-        self.output.isLoading.send(true)
+    fileprivate func fetchMovies() -> AnyCancellable {
+        output.isLoading.send(true)
         return api.request(
             serverRoute: .movie(
                 .nowPlaying(
@@ -97,7 +93,7 @@ class MovieViewModel {
             ),
             as: MovieList.self
         )
-        .receive(on: DispatchQueue.main)
+        .receive(on: queue)
         .sink { [weak self] result in
             guard let self = self else { return }
             self.output.isLoading.send(false)

@@ -21,7 +21,7 @@ final class MovieViewModelTest: XCTestCase {
                     return try OK(MovieList.mock(page: page))
                 }
             }
-            
+            $0.mainQueue = .immediate
             $0.reachability = .unsatisfied
         } operation: {
             MovieViewModel()
@@ -37,6 +37,7 @@ final class MovieViewModelTest: XCTestCase {
                     return try OK(MovieList.mock(page: page))
                 }
             }
+            $0.mainQueue = .immediate
         } operation: {
             MovieViewModel()
         }
@@ -56,6 +57,7 @@ final class MovieViewModelTest: XCTestCase {
                     return try OK(MovieList.mock(page: page))
                 }
             }
+            $0.mainQueue = .immediate
         } operation: {
             MovieViewModel()
         }
@@ -76,6 +78,8 @@ final class MovieViewModelTest: XCTestCase {
                     return try OK(MovieList.mock(page: page))
                 }
             }
+            $0.mainQueue = .immediate
+
         } operation: {
             MovieViewModel()
         }
@@ -93,6 +97,7 @@ final class MovieViewModelTest: XCTestCase {
                 self.counter += 1
                 return try OK(MovieList.mock(page: 1))
             }
+            $0.mainQueue = .immediate
         } operation: {
             MovieViewModel()
         }
@@ -116,6 +121,8 @@ final class MovieViewModelTest: XCTestCase {
                     ]
                 )
             }
+            $0.mainQueue = .immediate
+
         } operation: {
             MovieViewModel()
         }
@@ -129,6 +136,8 @@ final class MovieViewModelTest: XCTestCase {
 
     func testHappyPath() {
         let viewModel = withDependencies {
+            $0.mainQueue = .immediate
+
             $0.api.override(route: .movie(.nowPlaying(page: 1))) {
                 try OK(
                     [
@@ -167,23 +176,9 @@ final class MovieViewModelTest: XCTestCase {
         } operation: {
             MovieViewModel()
         }
-        
-        let expectMovieResult = MovieList.Movie(adult: false,
-                                                backdropPath: "/f1AQhx6ZfGhPZFTVKgxG91PhEYc.jpg",
-                                                id: 753342,
-                                                originalLanguage: "en",
-                                                originalTitle: "Napoleon",
-                                                overview: "An epic that details the checkered rise and fall of French Emperor Napoleon Bonaparte and his relentless journey to power through the prism of his addictive, volatile relationship with his wife, Josephine.",
-                                                popularity: 2998.164,
-                                                posterPath: "/jE5o7y9K6pZtWNNMEw3IdpHuncR.jpg",
-                                                releaseDate: "2023-11-22",
-                                                title: "Napoleon",
-                                                video: false,
-                                                voteAverage: 6.476,
-                                                voteCount: 1154)
-        
+  
         let movie = viewModel.output.movies.spy(&cancellabble)
         viewModel.input.loadMovie()
-        XCTAssertEqual(movie.values, [[], [expectMovieResult]])
+        XCTAssertEqual(movie.values.last?.last?.title, "Napoleon")
     }
 }

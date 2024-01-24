@@ -7,8 +7,10 @@
 
 import Combine
 import UIKit
-
+import Dependencies
 class MovieViewController: UIViewController {
+    @Dependency(\.mainQueue) var queue
+    
     enum MovieListSection: Int {
         case list
     }
@@ -57,7 +59,7 @@ class MovieViewController: UIViewController {
     
     func binding() {
         viewModel.output.movies
-            .receive(on: DispatchQueue.main)
+            .receive(on: queue)
             .sink { [weak self] result in
                 guard let self = self else { return }
                 self.sectionSnapshot.deleteAll()
@@ -71,7 +73,7 @@ class MovieViewController: UIViewController {
         
         viewModel.output.alertMessage
             .compactMap { $0 }
-            .receive(on: DispatchQueue.main)
+            .receive(on: queue)
             .sink { [weak self] alertMessage in
                 guard let self = self else { return }
                 self.showAlert(alertMessage: alertMessage)
@@ -80,7 +82,7 @@ class MovieViewController: UIViewController {
         
         viewModel.output.isLoading
             .filter { !$0 }
-            .receive(on: DispatchQueue.main)
+            .receive(on: queue)
             .sink { [weak self] _ in
                 guard let self = self else { return }
                 self.collectionView.refreshControl?.endRefreshing()
