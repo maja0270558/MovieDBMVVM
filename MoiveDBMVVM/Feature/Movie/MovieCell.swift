@@ -6,9 +6,11 @@
 //
 
 import UIKit
+import Dependencies
 
 class MovieCell: UICollectionViewCell {
 
+    @Dependency(\.imageFetcher) var imageLoader
     @IBOutlet weak var overview: UILabel!
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var image: UIImageView!
@@ -17,7 +19,7 @@ class MovieCell: UICollectionViewCell {
         image.layer.cornerRadius = 8
         title.text = model.title
         overview.text = model.overview
-        Current.imageProvider.loadImage(model.backdropPath ?? "", image)
+        imageLoader.loadImage(model.backdropPath ?? "", image)
     }
 
 }

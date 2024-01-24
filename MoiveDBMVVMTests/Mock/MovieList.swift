@@ -9,10 +9,12 @@ import Foundation
 @testable import MoiveDBMVVM
 
 extension MovieList {
-    static let mock: Self = .init(page: 1,
-                                  results: [.mock, .mock, .mock],
-                                  totalPages: 3,
-                                  totalResults: 3)
+    static func mock(page: Int) -> Self {
+        return .init(page: page,
+                     results: [.mock, .mock, .mock],
+                     totalPages: 3,
+                     totalResults: 3)
+    }
 }
 
 extension MovieList.Movie {

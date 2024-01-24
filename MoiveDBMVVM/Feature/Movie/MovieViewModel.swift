@@ -7,31 +7,44 @@
 
 import Combine
 import Foundation
+import Dependencies
 
 extension MovieViewModel: ViewModelType {
     struct Input {
-        fileprivate var loadMovieRelay: PassthroughSubject<Void, Never> = .init()
+        enum MovieLoadType {
+            case reload
+            case loadNext
+        }
+        
+        fileprivate var loadMovieRelay: PassthroughSubject<MovieLoadType, Never> = .init()
         func loadMovie() {
-            loadMovieRelay.send(())
+            loadMovieRelay.send(.loadNext)
         }
 
-        fileprivate var reloadRelay: PassthroughSubject<Void, Never> = .init()
         public func reload() {
-            reloadRelay.send(())
+            loadMovieRelay.send(.reload)
         }
     }
 
     struct Output {
         var movies: CurrentValueSubject<[MovieList.Movie], Never> = .init([])
-        var alertMessage: AnyPublisher<String, Never>?
+        var alertMessage: PassthroughSubject<String, Never> = .init()
     }
 }
 
 class MovieViewModel {
+    
+    @Dependency(\.api) var api
+    @Dependency(\.reachability) var reachability
+    @Dependency(\.test) var testString
+
     var state = MovieViewModelState()
-    var cancellables: Set<AnyCancellable>
     var input: Input = .init()
     var output: Output = .init()
+    
+    var isConnected: Bool = true
+    var cancellables: Set<AnyCancellable>
+    var requestCancellable: AnyCancellable?
     
     deinit {
         print("Deinit object")
@@ -44,51 +57,55 @@ class MovieViewModel {
     }
 
     func bind() {
-        let reload = input.reloadRelay
-            .handleOutput { [unowned self] in
-                self.output.movies.send([])
-                self.state.reset()
+      input.loadMovieRelay
+            .handleOutput { [weak self] in
+                guard let self = self else { return }
+                if $0 == .reload {
+                    self.output.movies.send([])
+                    self.state.reset()
+                }
             }
-            .share()
-
-        let loadMovie = input.loadMovieRelay
-            .filter { [unowned self] in
-                return self.state.needToLoadMore()
-            }
-            .handleOutput { [unowned self] _ in
-                self.state.increesePage()
-            }
-            .share()
-
-        let api = Publishers.Merge(reload, loadMovie)
-            .flatMap { [unowned self] _ in
-                Current.api.request(
-                    serverRoute: .movie(
-                        .nowPlaying(
-                            page: self.state.currentPage
-                        )
-                    ),
-                    as: MovieList.self
-                )
-            }
-            .eraseToAnyPublisher()
-            .share()
-
-        api.compactMap { $0.success }
-            .handleOutput { [unowned self] value in
-                self.state.setTotalPage(value.totalPages)
-            }
-            .map { $0.results }
-            .sink(receiveValue: { [unowned self] movies in
-                var output: [MovieList.Movie] = self.output.movies.value
-                output.append(contentsOf: movies)
-                self.output.movies.send(movies)
+            .filter { [unowned self] _ in self.state.needToLoadMore() }
+            .sink(receiveValue: { [unowned self] _ in
+                /// cancel on flight fetch
+                self.requestCancellable?.cancel()
+                self.requestCancellable = nil
+                /// fetch movie
+                self.requestCancellable = self.fetchMovies()
             })
             .store(in: &cancellables)
-
-        output.alertMessage = api.compactMap { $0.failure }
-            .map { $0.localizedDescription }
-            .eraseToAnyPublisher()
+          
+        
+        /// Network
+        reachability.pathUpdatePublisher.eraseToAnyPublisher()
+            .removeDuplicates()
+            .sink(receiveValue: { [weak self] path in
+                guard let self = self else { return }
+                self.isConnected = path.status == .satisfied
+            })
+            .store(in: &cancellables)
+    }
+    
+    func fetchMovies() -> AnyCancellable {
+        api.request(
+            serverRoute: .movie(
+                .nowPlaying(
+                    page: self.state.currentPage + 1
+                )
+            ),
+            as: MovieList.self
+        )
+        .sink { [weak self] result in
+            guard let self = self else { return }
+            if let error = result.failure {
+                self.output.alertMessage.send(error.localizedDescription)
+                return
+            }
+            if let success = result.success {
+                self.state.setPage(current: success.page, success.totalPages)
+                self.output.movies.send(success.results)
+            }
+        }
     }
 }
 
@@ -105,15 +122,12 @@ struct MovieViewModelState {
     }
 
     mutating func reset() {
-        currentPage = 1
+        currentPage = 0
         totalPage = nil
     }
 
-    mutating func increesePage() {
-        currentPage += 1
-    }
-
-    mutating func setTotalPage(_ page: Int?) {
+    mutating func setPage(current: Int, _ page: Int?) {
+        currentPage = current
         totalPage = page
     }
 }

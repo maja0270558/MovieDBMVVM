@@ -36,5 +36,85 @@
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7D347DAB-17D7-4C40-B876-C4217A04EC4C"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../Library/Developer/Xcode/DerivedData/MoiveDBMVVM-cijlrrfpnfrncrfuzxwblxjmnyzr/SourcePackages/checkouts/swift-dependencies/Sources/Dependencies/DependencyValues.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "344"
+            endingLineNumber = "344"
+            landmarkName = "value(for:context:file:function:line:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "89169378-058A-41D9-A9B9-3EE82AAC1F33"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../Library/Developer/Xcode/DerivedData/MoiveDBMVVM-cijlrrfpnfrncrfuzxwblxjmnyzr/SourcePackages/checkouts/swift-dependencies/Sources/Dependencies/DependencyValues.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "279"
+            endingLineNumber = "279"
+            landmarkName = "value(for:context:file:function:line:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "AC6976BA-4BA6-4E91-BD06-E93AEE2C1577"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../Library/Developer/Xcode/DerivedData/MoiveDBMVVM-cijlrrfpnfrncrfuzxwblxjmnyzr/SourcePackages/checkouts/swift-dependencies/Sources/Dependencies/Dependency.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "107"
+            endingLineNumber = "107"
+            landmarkName = "wrappedValue"
+            landmarkType = "24">
+            <Locations>
+               <Location
+                  uuid = "AC6976BA-4BA6-4E91-BD06-E93AEE2C1577 - 3c2d940c2a96a6a4"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Dependencies.Dependency.wrappedValue.getter : &#x3c4;_0_0"
+                  moduleName = "MoiveDBMVVM"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/django/Library/Developer/Xcode/DerivedData/MoiveDBMVVM-cijlrrfpnfrncrfuzxwblxjmnyzr/SourcePackages/checkouts/swift-dependencies/Sources/Dependencies/Dependency.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "107"
+                  endingLineNumber = "107"
+                  offsetFromSymbolStart = "412">
+               </Location>
+               <Location
+                  uuid = "AC6976BA-4BA6-4E91-BD06-E93AEE2C1577 - 4bea956cb9612d04"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; &#x3c4;_0_0 in Dependencies.Dependency.wrappedValue.getter : &#x3c4;_0_0"
+                  moduleName = "MoiveDBMVVM"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/django/Library/Developer/Xcode/DerivedData/MoiveDBMVVM-cijlrrfpnfrncrfuzxwblxjmnyzr/SourcePackages/checkouts/swift-dependencies/Sources/Dependencies/Dependency.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "107"
+                  endingLineNumber = "107"
+                  offsetFromSymbolStart = "176">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

@@ -22,7 +22,7 @@
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="YkC-SA-P1y">
                                 <rect key="frame" x="0.0" y="0.0" width="281" height="200"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="YkC-SA-P1y" secondAttribute="height" multiplier="281:200" id="xYJ-i4-waP"/>
+                                    <constraint firstAttribute="width" secondItem="YkC-SA-P1y" secondAttribute="height" multiplier="281:200" priority="750" id="xYJ-i4-waP"/>
                                 </constraints>
                             </imageView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="8cq-gD-LCd">

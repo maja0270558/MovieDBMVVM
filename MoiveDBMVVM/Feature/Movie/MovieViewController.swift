@@ -43,6 +43,7 @@ class MovieViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureRefreshControl()
         viewModel.input.loadMovie()
         binding()
     }
@@ -60,16 +61,43 @@ class MovieViewController: UIViewController {
                 guard let self = self else { return }
                 self.sectionSnapshot.deleteAll()
                 self.sectionSnapshot.append(result)
-                self.dataSource.apply(self.sectionSnapshot, to: MovieListSection.list, animatingDifferences: true, completion: nil)
+                self.dataSource.apply(
+                    self.sectionSnapshot,
+                    to: MovieListSection.list,
+                    animatingDifferences: true,
+                    completion: nil)
             }
             .store(in: &cancelables)
         
-        viewModel.output.alertMessage?
+        viewModel.output.alertMessage
             .compactMap { $0 }
             .receive(on: DispatchQueue.main)
-            .sink { _ in
+            .sink { [weak self] alertMessage in
+                guard let self = self else { return }
+                let alertController = UIViewController()
+                let message = UILabel()
+                message.text = alertMessage
+                alertController.view.addSubview(message)
+                message.autoLayout.fillSuperview()
+                if let sheet = alertController.sheetPresentationController {
+                    sheet.detents = [.medium()]
+                }
+                self.present(alertController, animated: true)
             }
             .store(in: &cancelables)
+    }
+    
+    func configureRefreshControl() {
+        collectionView.refreshControl = UIRefreshControl()
+        collectionView.refreshControl?.addTarget(
+            self, action:
+            #selector(handleRefreshControl),
+            for: .valueChanged)
+    }
+    
+    @objc func handleRefreshControl() {
+        viewModel.input.reload()
+        collectionView.refreshControl?.endRefreshing()
     }
 
     func makeDataSource() -> UICollectionViewDiffableDataSource<MovieListSection, MovieList.Movie> {

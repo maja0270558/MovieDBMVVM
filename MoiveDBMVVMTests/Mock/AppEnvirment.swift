@@ -8,9 +8,10 @@
 import Foundation
 @testable import MoiveDBMVVM
 
-extension Envirment {
-    static let mock: Self = {
-        return .init(api: .noop,
-                     imageProvider: .mock)
-    }()
-}
+//extension Envirment {
+//    static let mock: Self = {
+//        return .init(api: .noop,
+//                     imageProvider: .mock,
+//                     reachability: .live(.main))
+//    }()
+//}

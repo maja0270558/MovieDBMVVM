@@ -9,7 +9,7 @@ import UIKit
 import Nuke
 import NukeExtensions
 
-struct ImageFetcher {
+public struct ImageFetcher {
     var loadImage: @MainActor (String, UIImageView) -> Void
 }
 
