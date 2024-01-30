@@ -51,7 +51,7 @@ class MovieViewController: UIViewController {
     }
     
     func binding() {
-        viewModel.output.movies
+        viewModel.output.$movies
             .receive(on: queue)
             .sink { [weak self] result in
                 guard let self = self else { return }
@@ -73,7 +73,7 @@ class MovieViewController: UIViewController {
             }
             .store(in: &cancellables)
         
-        viewModel.output.isLoading
+        viewModel.output.$isLoading
             .filter { !$0 }
             .receive(on: queue)
             .sink { [weak self] _ in
@@ -127,7 +127,7 @@ extension MovieViewController: UICollectionViewDelegate {
         forItemAt indexPath: IndexPath)
     {
         if indexPath.row == sectionSnapshot.items.count - 1,
-           viewModel.output.isLoading.value == false
+           viewModel.output.isLoading == false
         {
             viewModel.input.loadMovie()
         }

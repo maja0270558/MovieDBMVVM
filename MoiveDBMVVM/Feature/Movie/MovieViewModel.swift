@@ -26,10 +26,10 @@ extension MovieViewModel: ViewModelType {
         }
     }
 
-    struct Output {
-        var movies: CurrentValueSubject<[MovieCellViewModel], Never> = .init([])
+    class Output {
+        @Published var movies: [MovieCellViewModel] = []
+        @Published var isLoading: Bool = false
         var alertMessage: PassthroughSubject<String, Never> = .init()
-        var isLoading: CurrentValueSubject<Bool, Never> = .init(false)
     }
 }
 
@@ -42,12 +42,11 @@ class MovieViewModel {
     var input: Input = .init()
     var output: Output = .init()
 
-    private(set) var isConnected: Bool = false
-    private(set) var cancellables: Set<AnyCancellable>
+    private(set) var isConnected: Bool = true
+    private(set) var cancellables: Set<AnyCancellable> = .init()
     private(set) var requestCancellable: AnyCancellable?
 
-    init(input: Input = Input(), cancellables: Set<AnyCancellable> = .init()) {
-        self.cancellables = cancellables
+    init(input: Input = Input()) {
         self.input = input
         bind()
     }
@@ -63,10 +62,10 @@ class MovieViewModel {
             .store(in: &cancellables)
 
         input.loadMovieRelay
-            .filter{ [unowned self] _ in
+            .filter { [unowned self] _ in
                 guard self.isConnected else {
                     self.output.alertMessage.send("The internet is down :[")
-                    self.output.isLoading.send(false)
+                    self.output.isLoading = false
                     return false
                 }
                 return true
@@ -74,7 +73,7 @@ class MovieViewModel {
             .handleOutput { [weak self] in
                 guard let self = self else { return }
                 if $0 == .reload {
-                    self.output.movies.send([])
+                    self.output.movies = []
                     self.state.reset()
                 }
             }
@@ -91,7 +90,7 @@ class MovieViewModel {
     }
 
     fileprivate func fetchMovies() -> AnyCancellable {
-        output.isLoading.send(true)
+        output.isLoading = true
         return api.request(
             serverRoute: .movie(
                 .nowPlaying(
@@ -103,7 +102,7 @@ class MovieViewModel {
         .receive(on: queue)
         .sink { [weak self] result in
             guard let self = self else { return }
-            self.output.isLoading.send(false)
+            self.output.isLoading = false
 
             if let error = result.failure {
                 self.output.alertMessage.send(error.localizedDescription)
@@ -112,14 +111,14 @@ class MovieViewModel {
 
             if let success = result.success {
                 self.state.setPage(current: success.page, success.totalPages)
-                var results = self.output.movies.value
+                var results = self.output.movies
                 let cellViewModels = success.results.compactMap {
                     MovieCellViewModel(title: $0.title ?? "",
                                        image: $0.posterPath ?? "",
                                        overview: $0.overview)
                 }
                 results.append(contentsOf: cellViewModels)
-                self.output.movies.send(results)
+                self.output.movies = results
             }
         }
     }

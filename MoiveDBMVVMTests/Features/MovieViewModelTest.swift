@@ -30,9 +30,9 @@ final class MovieViewModelTest: XCTestCase {
             $0.reachability = .unsatisfied
         }
 
-        let movie = viewModel.output.movies.spy(&cancellabble)
+        let movie = viewModel.output.$movies.spy(&cancellabble)
         let alert = viewModel.output.alertMessage.eraseToAnyPublisher().spy(&cancellabble)
-        let isLoading = viewModel.output.isLoading.eraseToAnyPublisher().spy(&cancellabble)
+        let isLoading = viewModel.output.$isLoading.eraseToAnyPublisher().spy(&cancellabble)
 
         viewModel.input.loadMovie()
         XCTAssertEqual(movie.values, [[]])
@@ -117,7 +117,7 @@ final class MovieViewModelTest: XCTestCase {
             }
         }
 
-        let movie = viewModel.output.movies.spy(&cancellabble)
+        let movie = viewModel.output.$movies.spy(&cancellabble)
         let alert = viewModel.output.alertMessage.eraseToAnyPublisher().spy(&cancellabble)
         viewModel.input.loadMovie()
         XCTAssertEqual(movie.values, [[]])
@@ -163,7 +163,7 @@ final class MovieViewModelTest: XCTestCase {
             }
         }
 
-        let movie = viewModel.output.movies.spy(&cancellabble)
+        let movie = viewModel.output.$movies.spy(&cancellabble)
         viewModel.input.loadMovie()
         XCTAssertEqual(movie.values.last?.last?.title, "Napoleon")
     }
