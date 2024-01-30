@@ -16,18 +16,17 @@ final class MovieViewModelTest: XCTestCase {
     
     func testBadConnection() {
         let viewModel = withDependencies {
-            for page in 1 ... 10 {
-                $0.api.override(route: .movie(.nowPlaying(page: page))) {
-                    return try OK(MovieList.mock(page: page))
-                }
-            }
             $0.mainQueue = .immediate
             $0.reachability = .unsatisfied
         } operation: {
             MovieViewModel()
         }
         
+        let movie = viewModel.output.movies.spy(&cancellabble)
+        let alert = viewModel.output.alertMessage.eraseToAnyPublisher().spy(&cancellabble)
         viewModel.input.loadMovie()
+        XCTAssertEqual(movie.values, [[]])
+        XCTAssertEqual(alert.values, ["The internet is down :["])
     }
 
     func testLoadMovieShouldIncreaseCurrentPage() {

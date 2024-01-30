@@ -23,11 +23,6 @@ private enum ReachabilityClientKey: DependencyKey {
     static var testValue: ReachabilityClient = .satisfied
 }
 
-private enum TestKey: DependencyKey {
-    static let liveValue = "Live"
-    static var testValue: String = "Test"
-}
-
 public extension DependencyValues {
     var api: ApiClient {
         get { self[ApiClientKey.self] }
@@ -42,10 +37,5 @@ public extension DependencyValues {
     var reachability: ReachabilityClient {
         get { self[ReachabilityClientKey.self] }
         set { self[ReachabilityClientKey.self] = newValue }
-    }
-    
-    var test: String {
-        get { self[TestKey.self] }
-        set { self[TestKey.self] = newValue }
     }
 }

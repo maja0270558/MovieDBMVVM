@@ -15,7 +15,7 @@ public struct ApiClient {
         serverRoute route: Api,
         as: A.Type
     ) -> AnyPublisher<Result<A, Error>, Never> {
-        
+  
         let publisher = try! self.sessionDataTaskPublisher(route)
             .tryMap { result in
                 guard let response = result.response as? HTTPURLResponse, response.statusCode == 200 else {

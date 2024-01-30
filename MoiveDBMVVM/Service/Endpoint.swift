@@ -5,6 +5,7 @@
 //  Created by DjangoLin on 2023/12/19.
 //
 
+import Combine
 import Foundation
 
 enum RequestMethod: String {
@@ -35,63 +36,76 @@ public enum Api: Equatable {
         return [
             "accept": "application/json",
             "Authorization": "***REMOVED***"
-          ]
+        ]
     }
+
     case movie(Movie)
     case login
-    
+
     public enum Movie: Equatable, Sendable {
         case popular(page: Int)
         case upcoming(page: Int)
         case nowPlaying(page: Int)
         case detail(id: Int)
     }
-    
-     subscript<T>(dynamicMember member: KeyPath<Endpoint, T>) -> T {
+
+    subscript<T>(dynamicMember member: KeyPath<Endpoint, T>) -> T {
         switch self {
-        case let .movie(endpoint):
+        case .movie(let endpoint):
             return endpoint[keyPath: member]
         case .login:
             return BaseEndpoint()[keyPath: member]
         }
     }
-    
+
+    func requestPublisher() -> AnyPublisher<URLRequest, URLError> {
+        return Future<URLRequest, URLError> { promise in
+            do {
+                let request = try self.request()
+                promise(.success(request))
+            } catch {
+                promise(.failure(error as! URLError))
+            }
+        }
+        .eraseToAnyPublisher()
+    }
+
     func request() throws -> URLRequest {
         var urlComponents = URLComponents()
         urlComponents.scheme = self.scheme
         urlComponents.host = self.host
         urlComponents.path = "/3/\(self.path)"
         urlComponents.queryItems = self.query
-        
+
         guard let url = urlComponents.url else {
-            throw RequestError.invalidURL
+            throw URLError(.unsupportedURL)
         }
 
         var request = URLRequest(url: url)
         request.httpMethod = self.method.rawValue
-        
-        let allHTTPHeaderFields = self.header?.merging(defaultHeaders, uniquingKeysWith: { old, new in
-            return new
+
+        let allHTTPHeaderFields = self.header?.merging(defaultHeaders, uniquingKeysWith: { _, new in
+            new
         })
-        
+
         request.allHTTPHeaderFields = allHTTPHeaderFields
 
         if let body = self.body {
             request.httpBody = try? JSONSerialization.data(withJSONObject: body, options: [])
         }
-       
+
         return request
     }
 }
 
 struct BaseEndpoint: Endpoint {
     var path: String { return "" }
-    
-    var method: RequestMethod  {  return .GET }
-    
-    var header: [String : String]? = nil
-    
-    var body: [String : String]? = nil
+
+    var method: RequestMethod { return .GET }
+
+    var header: [String: String]? = nil
+
+    var body: [String: String]? = nil
 }
 
 extension Api.Movie: Endpoint {

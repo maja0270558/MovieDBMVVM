@@ -50,12 +50,7 @@ class MovieViewController: UIViewController {
         binding()
     }
  
-    func setupLayout() {
-        view.addSubview(collectionView)
-        collectionView.autoLayout.fillSuperview()
-        collectionView.dataSource = dataSource
-        collectionView.delegate = self
-    }
+   
     
     func binding() {
         viewModel.output.movies
@@ -90,7 +85,14 @@ class MovieViewController: UIViewController {
             .store(in: &cancellables)
     }
     
-    func configureRefreshControl() {
+    fileprivate func setupLayout() {
+        view.addSubview(collectionView)
+        collectionView.autoLayout.fillSuperview()
+        collectionView.dataSource = dataSource
+        collectionView.delegate = self
+    }
+    
+    fileprivate func configureRefreshControl() {
         collectionView.refreshControl = UIRefreshControl()
         collectionView.refreshControl?.addTarget(
             self, action:
@@ -102,7 +104,7 @@ class MovieViewController: UIViewController {
         viewModel.input.reload()
     }
 
-    func makeDataSource() -> UICollectionViewDiffableDataSource<MovieListSection, MovieCellViewModel> {
+     func makeDataSource() -> UICollectionViewDiffableDataSource<MovieListSection, MovieCellViewModel> {
         let nib = UINib(nibName: "MovieCell", bundle: nil)
         let cellRegistration = UICollectionView.CellRegistration<MovieCell, MovieCellViewModel>.init(cellNib: nib) { cell, _, item in
             cell.configure(model: item)

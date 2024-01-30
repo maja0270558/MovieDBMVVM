@@ -6,8 +6,8 @@
 //
 
 #if DEBUG
-import Foundation
 import Combine
+import Foundation
 
 public func OK<A: Encodable>(
     _ value: A, encoder: JSONEncoder = .init()
@@ -30,11 +30,10 @@ public func OK(_ jsonObject: Any) throws -> (Data, URLResponse) {
 }
 
 public extension ApiClient {
-    
     mutating func override(
         route matchingRoute: Api,
         withResponse response: @escaping @Sendable () throws -> (Data, URLResponse)
-    )  {
+    ) {
         self.sessionDataTaskPublisher = { [self] route in
             if route == matchingRoute {
                 return Just(
@@ -49,5 +48,3 @@ public extension ApiClient {
     }
 }
 #endif
-
-

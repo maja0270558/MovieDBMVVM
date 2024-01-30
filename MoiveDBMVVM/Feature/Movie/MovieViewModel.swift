@@ -37,7 +37,6 @@ class MovieViewModel {
     @Dependency(\.mainQueue) var queue
     @Dependency(\.api) var api
     @Dependency(\.reachability) var reachability
-    @Dependency(\.test) var testString
 
     var state = MovieViewModelState()
     var input: Input = .init()
@@ -63,7 +62,12 @@ class MovieViewModel {
                 }
             }
             .filter { [unowned self] _ in self.state.needToLoadMore() }
-            .sink(receiveValue: { [unowned self] _ in
+            .sink(receiveValue: { [weak self] _ in
+                guard let self = self else { return }
+                guard self.isConnected else {
+                    self.output.alertMessage.send("The internet is down :[")
+                    return
+                }
                 /// cancel on flight fetch
                 self.requestCancellable?.cancel()
                 self.requestCancellable = nil
