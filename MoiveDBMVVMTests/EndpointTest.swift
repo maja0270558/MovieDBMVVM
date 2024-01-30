@@ -9,7 +9,7 @@
 import XCTest
 
 final class EndpointTest: XCTestCase {
-    func expect(api: Api, equalTo to: String) {
+    func expect(api: ApiRoute, equalTo to: String) {
         let request = try? api.request()
         XCTAssertEqual(request?.url?.absoluteString, to)
     }

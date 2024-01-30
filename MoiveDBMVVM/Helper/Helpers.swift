@@ -31,7 +31,7 @@ public func OK(_ jsonObject: Any) throws -> (Data, URLResponse) {
 
 public extension ApiClient {
     mutating func override(
-        route matchingRoute: Api,
+        route matchingRoute: ApiRoute,
         withResponse response: @escaping @Sendable () throws -> (Data, URLResponse)
     ) {
         self.sessionDataTaskPublisher = { [self] route in

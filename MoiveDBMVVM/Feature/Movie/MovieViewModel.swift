@@ -6,8 +6,8 @@
 //
 
 import Combine
-import Foundation
 import Dependencies
+import Foundation
 
 extension MovieViewModel: ViewModelType {
     struct Input {
@@ -15,9 +15,9 @@ extension MovieViewModel: ViewModelType {
             case reload
             case loadNext
         }
-        
+
         fileprivate var loadMovieRelay: PassthroughSubject<MovieLoadType, Never> = .init()
-        func loadMovie() {
+        public func loadMovie() {
             loadMovieRelay.send(.loadNext)
         }
 
@@ -25,7 +25,7 @@ extension MovieViewModel: ViewModelType {
             loadMovieRelay.send(.reload)
         }
     }
-    
+
     struct Output {
         var movies: CurrentValueSubject<[MovieCellViewModel], Never> = .init([])
         var alertMessage: PassthroughSubject<String, Never> = .init()
@@ -41,10 +41,10 @@ class MovieViewModel {
     var state = MovieViewModelState()
     var input: Input = .init()
     var output: Output = .init()
-    
-    var isConnected: Bool = true
-    var cancellables: Set<AnyCancellable>
-    var requestCancellable: AnyCancellable?
+
+    private(set) var isConnected: Bool = false
+    private(set) var cancellables: Set<AnyCancellable>
+    private(set) var requestCancellable: AnyCancellable?
 
     init(input: Input = Input(), cancellables: Set<AnyCancellable> = .init()) {
         self.cancellables = cancellables
@@ -53,7 +53,24 @@ class MovieViewModel {
     }
 
     fileprivate func bind() {
-      input.loadMovieRelay
+        /// Network
+        reachability.pathUpdatePublisher.eraseToAnyPublisher()
+            .removeDuplicates()
+            .sink(receiveValue: { [weak self] path in
+                guard let self = self else { return }
+                self.isConnected = path.status == .satisfied
+            })
+            .store(in: &cancellables)
+
+        input.loadMovieRelay
+            .filter{ [unowned self] _ in
+                guard self.isConnected else {
+                    self.output.alertMessage.send("The internet is down :[")
+                    self.output.isLoading.send(false)
+                    return false
+                }
+                return true
+            }
             .handleOutput { [weak self] in
                 guard let self = self else { return }
                 if $0 == .reload {
@@ -64,10 +81,6 @@ class MovieViewModel {
             .filter { [unowned self] _ in self.state.needToLoadMore() }
             .sink(receiveValue: { [weak self] _ in
                 guard let self = self else { return }
-                guard self.isConnected else {
-                    self.output.alertMessage.send("The internet is down :[")
-                    return
-                }
                 /// cancel on flight fetch
                 self.requestCancellable?.cancel()
                 self.requestCancellable = nil
@@ -75,18 +88,8 @@ class MovieViewModel {
                 self.requestCancellable = self.fetchMovies()
             })
             .store(in: &cancellables)
-          
-        
-        /// Network
-        reachability.pathUpdatePublisher.eraseToAnyPublisher()
-            .removeDuplicates()
-            .sink(receiveValue: { [weak self] path in
-                guard let self = self else { return }
-                self.isConnected = path.status == .satisfied
-            })
-            .store(in: &cancellables)
     }
-    
+
     fileprivate func fetchMovies() -> AnyCancellable {
         output.isLoading.send(true)
         return api.request(
@@ -101,19 +104,19 @@ class MovieViewModel {
         .sink { [weak self] result in
             guard let self = self else { return }
             self.output.isLoading.send(false)
-            
+
             if let error = result.failure {
                 self.output.alertMessage.send(error.localizedDescription)
                 return
             }
-            
+
             if let success = result.success {
                 self.state.setPage(current: success.page, success.totalPages)
                 var results = self.output.movies.value
-                let cellViewModels = success.results.compactMap  {
-                    return MovieCellViewModel(title: $0.title ?? "",
-                                              image: $0.posterPath ?? "",
-                                              overview: $0.overview)
+                let cellViewModels = success.results.compactMap {
+                    MovieCellViewModel(title: $0.title ?? "",
+                                       image: $0.posterPath ?? "",
+                                       overview: $0.overview)
                 }
                 results.append(contentsOf: cellViewModels)
                 self.output.movies.send(results)

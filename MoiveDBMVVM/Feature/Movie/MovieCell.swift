@@ -8,13 +8,6 @@
 import UIKit
 import Dependencies
 
-struct MovieCellViewModel: Equatable, Hashable {
-    var uuid = UUID()
-    var title: String
-    var image: String
-    var overview: String
-}
-
 class MovieCell: UICollectionViewCell {
 
     @Dependency(\.imageFetcher) var imageLoader

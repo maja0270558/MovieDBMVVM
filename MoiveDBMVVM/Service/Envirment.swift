@@ -14,8 +14,8 @@ private enum ApiClientKey: DependencyKey {
 }
 
 private enum ImageFetcherKey: DependencyKey {
-    static let liveValue: ImageFetcher = .live
-    static var testValue: ImageFetcher = .mock
+    static let liveValue: ImageFetcherClient = .live
+    static var testValue: ImageFetcherClient = .mock
 }
 
 private enum ReachabilityClientKey: DependencyKey {
@@ -29,7 +29,7 @@ public extension DependencyValues {
         set { self[ApiClientKey.self] = newValue }
     }
 
-    var imageFetcher: ImageFetcher {
+    var imageFetcher: ImageFetcherClient {
         get { self[ImageFetcherKey.self] }
         set { self[ImageFetcherKey.self] = newValue }
     }

@@ -32,8 +32,11 @@ final class MovieViewModelTest: XCTestCase {
 
         let movie = viewModel.output.movies.spy(&cancellabble)
         let alert = viewModel.output.alertMessage.eraseToAnyPublisher().spy(&cancellabble)
+        let isLoading = viewModel.output.isLoading.eraseToAnyPublisher().spy(&cancellabble)
+
         viewModel.input.loadMovie()
         XCTAssertEqual(movie.values, [[]])
+        XCTAssertEqual(isLoading.values, [false, false])
         XCTAssertEqual(alert.values, ["The internet is down :["])
     }
 

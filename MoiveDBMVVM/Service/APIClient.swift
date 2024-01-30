@@ -9,10 +9,10 @@ import Combine
 import Foundation
 public struct ApiClient {
 
-    public var sessionDataTaskPublisher: @Sendable (Api) throws -> AnyPublisher<(data: Data, response: URLResponse), URLError>
+    public var sessionDataTaskPublisher: @Sendable (ApiRoute) throws -> AnyPublisher<(data: Data, response: URLResponse), URLError>
 
     public func request<A: Decodable>(
-        serverRoute route: Api,
+        serverRoute route: ApiRoute,
         as: A.Type
     ) -> AnyPublisher<Result<A, Error>, Never> {
   
@@ -32,6 +32,23 @@ public struct ApiClient {
 
         return publisher
     }
+}
+
+extension ApiClient {
+    static let live: Self = .init(
+        sessionDataTaskPublisher: { api in
+            let configuration = URLSessionConfiguration.default
+            configuration.waitsForConnectivity = false
+            let session = URLSession(configuration: configuration)
+            return try session.dataTaskPublisher(for: api.request()).eraseToAnyPublisher()
+        }
+    )
+
+    public static let noop: Self = .init(
+        sessionDataTaskPublisher: { api in
+            fatalError("should not get in to this")
+        }
+    )
 }
 
 let decoder: JSONDecoder = {

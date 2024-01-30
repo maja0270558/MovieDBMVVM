@@ -9,11 +9,11 @@ import UIKit
 import Nuke
 import NukeExtensions
 
-public struct ImageFetcher {
+public struct ImageFetcherClient {
     var loadImage: @MainActor (String, UIImageView) -> Void
 }
 
-extension ImageFetcher {
+extension ImageFetcherClient {
     static let live: Self = .init { url, imageView in
         let options = ImageLoadingOptions(
             placeholder: UIImage(named: "placeholder"),
