@@ -12,4 +12,5 @@ struct MovieCellViewModel: Equatable, Hashable {
     var title: String
     var image: String
     var overview: String
+    var id: Int
 }

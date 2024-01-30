@@ -84,5 +84,99 @@
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "5EBE234C-BB95-4520-B5BE-2E1694600E52"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MoiveDBMVVM/Feature/Movie/Detail/MovieDetailViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "47"
+            endingLineNumber = "47"
+            landmarkName = "bind()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "811923CF-608C-488F-9C80-002144CDF673"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MoiveDBMVVM/Feature/Movie/Detail/MovieDetailViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "64"
+            endingLineNumber = "64"
+            landmarkName = "fetchDetail()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "811923CF-608C-488F-9C80-002144CDF673 - 36ea015699f04a0a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Result&lt;MoiveDBMVVM.MovieDetail, Swift.Error&gt;) -&gt; () in MoiveDBMVVM.MovieDetailViewModel.fetchDetail() -&gt; Combine.AnyCancellable"
+                  moduleName = "MoiveDBMVVM"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/django/Documents/SideProject/MoiveDBMVVM/MoiveDBMVVM/Feature/Movie/Detail/MovieDetailViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "64"
+                  endingLineNumber = "64"
+                  offsetFromSymbolStart = "572">
+               </Location>
+               <Location
+                  uuid = "811923CF-608C-488F-9C80-002144CDF673 - 36ea015699f04a0a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Result&lt;MoiveDBMVVM.MovieDetail, Swift.Error&gt;) -&gt; () in MoiveDBMVVM.MovieDetailViewModel.fetchDetail() -&gt; Combine.AnyCancellable"
+                  moduleName = "MoiveDBMVVM"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/django/Documents/SideProject/MoiveDBMVVM/MoiveDBMVVM/Feature/Movie/Detail/MovieDetailViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "64"
+                  endingLineNumber = "64"
+                  offsetFromSymbolStart = "1988">
+               </Location>
+               <Location
+                  uuid = "811923CF-608C-488F-9C80-002144CDF673 - 36ea015699f04a0a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Result&lt;MoiveDBMVVM.MovieDetail, Swift.Error&gt;) -&gt; () in MoiveDBMVVM.MovieDetailViewModel.fetchDetail() -&gt; Combine.AnyCancellable"
+                  moduleName = "MoiveDBMVVM"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/django/Documents/SideProject/MoiveDBMVVM/MoiveDBMVVM/Feature/Movie/Detail/MovieDetailViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "64"
+                  endingLineNumber = "64"
+                  offsetFromSymbolStart = "588">
+               </Location>
+               <Location
+                  uuid = "811923CF-608C-488F-9C80-002144CDF673 - 36ea015699f04a0a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Result&lt;MoiveDBMVVM.MovieDetail, Swift.Error&gt;) -&gt; () in MoiveDBMVVM.MovieDetailViewModel.fetchDetail() -&gt; Combine.AnyCancellable"
+                  moduleName = "MoiveDBMVVM"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/django/Documents/SideProject/MoiveDBMVVM/MoiveDBMVVM/Feature/Movie/Detail/MovieDetailViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "64"
+                  endingLineNumber = "64"
+                  offsetFromSymbolStart = "2012">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

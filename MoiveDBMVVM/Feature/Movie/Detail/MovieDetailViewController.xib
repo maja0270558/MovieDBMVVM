@@ -10,6 +10,9 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MovieDetailViewController" customModule="MoiveDBMVVM" customModuleProvider="target">
             <connections>
+                <outlet property="image" destination="P5u-Q7-Hbb" id="dNe-h0-aq5"/>
+                <outlet property="overview" destination="ZML-ZT-DFq" id="zGu-A4-gU7"/>
+                <outlet property="titleLabel" destination="Owv-4d-N8C" id="wJe-rP-2Nz"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>

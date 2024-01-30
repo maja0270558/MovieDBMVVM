@@ -36,10 +36,12 @@ class MovieDetailViewModel: ViewModelType {
     
     init(movieId: Int) {
         self.fetchMovieId = movieId
+        bind()
     }
     
     func bind() {
-        input.viewDidLoadSubject.eraseToAnyPublisher()
+        input.viewDidLoadSubject
+            .eraseToAnyPublisher()
             .sink { [weak self] in
                 guard let self = self else { return }
                 self.requestCancellable = self.fetchDetail()
@@ -53,19 +55,21 @@ class MovieDetailViewModel: ViewModelType {
             serverRoute: .movie(
                 .detail(id: fetchMovieId)
             ),
-            as: MovieList.self
+            as: MovieDetail.self
         )
         .receive(on: queue)
         .sink { [weak self] result in
             guard let self = self else { return }
 
             if let error = result.failure {
-                self.output.title = error.localizedDescription
+                print(error)
                 return
             }
 
             if let success = result.success {
-               
+                self.output.title = success.originalTitle
+                self.output.overview  = success.overview
+                self.output.image = success.backdropPath
             }
         }
     }

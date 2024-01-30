@@ -115,7 +115,8 @@ class MovieViewModel {
                 let cellViewModels = success.results.compactMap {
                     MovieCellViewModel(title: $0.title ?? "",
                                        image: $0.posterPath ?? "",
-                                       overview: $0.overview)
+                                       overview: $0.overview,
+                                       id: $0.id)
                 }
                 results.append(contentsOf: cellViewModels)
                 self.output.movies = results

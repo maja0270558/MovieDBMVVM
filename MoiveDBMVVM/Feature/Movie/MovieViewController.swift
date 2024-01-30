@@ -132,4 +132,11 @@ extension MovieViewController: UICollectionViewDelegate {
             viewModel.input.loadMovie()
         }
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let selectedItem = dataSource.itemIdentifier(for: indexPath) else { return }
+        let vm = MovieDetailViewModel(movieId: selectedItem.id)
+        let vc = MovieDetailViewController(viewModel: vm)
+        self.show(vc, sender: self)
+    }
 }
