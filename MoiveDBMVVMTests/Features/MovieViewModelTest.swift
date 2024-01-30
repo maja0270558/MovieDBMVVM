@@ -13,15 +13,23 @@ import XCTest
 final class MovieViewModelTest: XCTestCase {
     fileprivate var counter = 0
     var cancellabble = Set<AnyCancellable>()
-    
-    func testBadConnection() {
+
+    func makeSUT(_ updateValuesForOperation: (inout DependencyValues) -> Void) -> MovieViewModel {
         let viewModel = withDependencies {
+            updateValuesForOperation(&$0)
             $0.mainQueue = .immediate
-            $0.reachability = .unsatisfied
         } operation: {
             MovieViewModel()
         }
-        
+        return viewModel
+    }
+
+    func testBadConnection() {
+        let viewModel = makeSUT {
+            $0.mainQueue = .immediate
+            $0.reachability = .unsatisfied
+        }
+
         let movie = viewModel.output.movies.spy(&cancellabble)
         let alert = viewModel.output.alertMessage.eraseToAnyPublisher().spy(&cancellabble)
         viewModel.input.loadMovie()
@@ -30,15 +38,12 @@ final class MovieViewModelTest: XCTestCase {
     }
 
     func testLoadMovieShouldIncreaseCurrentPage() {
-        let viewModel = withDependencies {
+        let viewModel = makeSUT {
             for page in 1 ... 10 {
                 $0.api.override(route: .movie(.nowPlaying(page: page))) {
-                    return try OK(MovieList.mock(page: page))
+                    try OK(MovieList.mock(page: page))
                 }
             }
-            $0.mainQueue = .immediate
-        } operation: {
-            MovieViewModel()
         }
 
         viewModel.input.loadMovie()
@@ -50,17 +55,14 @@ final class MovieViewModelTest: XCTestCase {
     }
 
     func testReloadShouldResetCurrentPage() {
-        let viewModel = withDependencies {
+        let viewModel = makeSUT {
             for page in 1 ... 10 {
                 $0.api.override(route: .movie(.nowPlaying(page: page))) {
-                    return try OK(MovieList.mock(page: page))
+                    try OK(MovieList.mock(page: page))
                 }
             }
-            $0.mainQueue = .immediate
-        } operation: {
-            MovieViewModel()
         }
-        
+
         viewModel.input.loadMovie()
         XCTAssertEqual(viewModel.state.currentPage, 1)
         viewModel.input.loadMovie()
@@ -70,19 +72,15 @@ final class MovieViewModelTest: XCTestCase {
     }
 
     func testLoadMovieShouldInvokeOnlyOnce() {
-        let viewModel = withDependencies {
+        let viewModel = makeSUT {
             for page in 1 ... 2 {
                 $0.api.override(route: .movie(.nowPlaying(page: page))) {
                     self.counter += 1
                     return try OK(MovieList.mock(page: page))
                 }
             }
-            $0.mainQueue = .immediate
-
-        } operation: {
-            MovieViewModel()
         }
-        
+
         viewModel.input.loadMovie()
         XCTAssertEqual(counter, 1)
 
@@ -91,17 +89,13 @@ final class MovieViewModelTest: XCTestCase {
     }
 
     func testReloadMovieShouldInvokeOnlyOnce() {
-        let viewModel = withDependencies {
+        let viewModel = makeSUT {
             $0.api.override(route: .movie(.nowPlaying(page: 1))) {
                 self.counter += 1
                 return try OK(MovieList.mock(page: 1))
             }
-            $0.mainQueue = .immediate
-        } operation: {
-            MovieViewModel()
         }
-        
-        
+
         viewModel.input.reload()
         XCTAssertEqual(counter, 1)
 
@@ -109,10 +103,8 @@ final class MovieViewModelTest: XCTestCase {
         XCTAssertEqual(counter, 2)
     }
 
-
     func testParsingFail() {
-        
-        let viewModel = withDependencies {
+        let viewModel = makeSUT {
             $0.api.override(route: .movie(.nowPlaying(page: 1))) {
                 try OK(
                     [
@@ -120,12 +112,8 @@ final class MovieViewModelTest: XCTestCase {
                     ]
                 )
             }
-            $0.mainQueue = .immediate
-
-        } operation: {
-            MovieViewModel()
         }
-        
+
         let movie = viewModel.output.movies.spy(&cancellabble)
         let alert = viewModel.output.alertMessage.eraseToAnyPublisher().spy(&cancellabble)
         viewModel.input.loadMovie()
@@ -134,9 +122,7 @@ final class MovieViewModelTest: XCTestCase {
     }
 
     func testHappyPath() {
-        let viewModel = withDependencies {
-            $0.mainQueue = .immediate
-
+        let viewModel = makeSUT {
             $0.api.override(route: .movie(.nowPlaying(page: 1))) {
                 try OK(
                     [
@@ -172,10 +158,8 @@ final class MovieViewModelTest: XCTestCase {
                     ]
                 )
             }
-        } operation: {
-            MovieViewModel()
         }
-  
+
         let movie = viewModel.output.movies.spy(&cancellabble)
         viewModel.input.loadMovie()
         XCTAssertEqual(movie.values.last?.last?.title, "Napoleon")
