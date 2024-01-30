@@ -49,8 +49,6 @@ class MovieViewController: UIViewController {
         viewModel.input.loadMovie()
         binding()
     }
- 
-   
     
     func binding() {
         viewModel.output.movies

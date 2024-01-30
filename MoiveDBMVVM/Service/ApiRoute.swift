@@ -58,14 +58,10 @@ public enum ApiRoute: Equatable {
         case detail(id: Int)
     }
 
-    case login
-
     subscript<T>(dynamicMember member: KeyPath<Endpoint, T>) -> T {
         switch self {
         case .movie(let endpoint):
             return endpoint[keyPath: member]
-        case .login:
-            return BaseEndpoint()[keyPath: member]
         }
     }
 }
