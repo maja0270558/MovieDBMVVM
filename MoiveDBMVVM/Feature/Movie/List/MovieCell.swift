@@ -5,15 +5,14 @@
 //  Created by DjangoLin on 2024/1/17.
 //
 
-import UIKit
 import Dependencies
+import UIKit
 
 class MovieCell: UICollectionViewCell {
-
     @Dependency(\.imageFetcher) var imageLoader
-    @IBOutlet weak var overview: UILabel!
-    @IBOutlet weak var title: UILabel!
-    @IBOutlet weak var image: UIImageView!
+    @IBOutlet var overview: UILabel!
+    @IBOutlet var title: UILabel!
+    @IBOutlet var image: UIImageView!
 
     func configure(model: MovieCellViewModel) {
         image.layer.cornerRadius = 8
@@ -21,5 +20,4 @@ class MovieCell: UICollectionViewCell {
         overview.text = model.overview
         imageLoader.loadImage(model.image, image)
     }
-
 }

@@ -5,21 +5,20 @@
 //  Created by DjangoLin on 2024/1/30.
 //
 
-import UIKit
-import Dependencies
 import Combine
+import Dependencies
+import UIKit
 
 class MovieDetailViewController: UIViewController {
-    
     @Dependency(\.imageFetcher) var imageLoader
     @Dependency(\.mainQueue) var queue
     
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var overview: UILabel!
-    @IBOutlet weak var image: UIImageView!
-    @IBOutlet weak var releaseDate: UILabel!
-    @IBOutlet weak var popularity: UILabel!
-    @IBOutlet weak var language: UILabel!
+    @IBOutlet var titleLabel: UILabel!
+    @IBOutlet var overview: UILabel!
+    @IBOutlet var image: UIImageView!
+    @IBOutlet var releaseDate: UILabel!
+    @IBOutlet var popularity: UILabel!
+    @IBOutlet var language: UILabel!
     
     let viewModel: MovieDetailViewModel
     private(set) var cancellables: Set<AnyCancellable> = .init()
@@ -32,7 +31,6 @@ class MovieDetailViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,6 +52,5 @@ class MovieDetailViewController: UIViewController {
                 self.overview.text = detail.overview
             }
             .store(in: &cancellables)
-        
     }
 }

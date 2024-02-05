@@ -5,9 +5,9 @@
 //  Created by DjangoLin on 2024/1/30.
 //
 
-import Foundation
 import Combine
 import Dependencies
+import Foundation
 
 extension MovieDetailViewModel {
     struct Input {
@@ -16,7 +16,7 @@ extension MovieDetailViewModel {
             viewDidLoadSubject.send(())
         }
     }
-    
+
     class Output {
         @Published var detail: MovieDetail?
         var alertMessage: PassthroughSubject<String, Never> = .init()
@@ -31,7 +31,7 @@ class MovieDetailViewModel: ViewModelType {
     var input: Input = .init()
     var output: Output = .init()
     var fetchMovieId: Int
-    
+
     private(set) var cancellables: Set<AnyCancellable> = .init()
     private(set) var requestCancellable: AnyCancellable?
     private(set) var isConnected: Bool = true
@@ -40,7 +40,7 @@ class MovieDetailViewModel: ViewModelType {
         self.fetchMovieId = movieId
         bind()
     }
-    
+
     func bind() {
         reachability.pathUpdatePublisher.eraseToAnyPublisher()
             .removeDuplicates()
@@ -49,7 +49,7 @@ class MovieDetailViewModel: ViewModelType {
                 self.isConnected = path.status == .satisfied
             })
             .store(in: &cancellables)
-        
+
         input.viewDidLoadSubject
             .eraseToAnyPublisher()
             .filter { [unowned self] _ in
@@ -65,7 +65,7 @@ class MovieDetailViewModel: ViewModelType {
             }
             .store(in: &cancellables)
     }
-    
+
     fileprivate func fetchDetail() -> AnyCancellable {
         return api.request(
             serverRoute: .movie(
@@ -87,5 +87,4 @@ class MovieDetailViewModel: ViewModelType {
             }
         }
     }
-    
 }

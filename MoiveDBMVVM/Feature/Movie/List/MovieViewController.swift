@@ -6,8 +6,8 @@
 //
 
 import Combine
-import UIKit
 import Dependencies
+import UIKit
 class MovieViewController: UIViewController {
     @Dependency(\.mainQueue) var queue
     
@@ -102,7 +102,7 @@ class MovieViewController: UIViewController {
         viewModel.input.reload()
     }
 
-     func makeDataSource() -> UICollectionViewDiffableDataSource<MovieListSection, MovieCellViewModel> {
+    func makeDataSource() -> UICollectionViewDiffableDataSource<MovieListSection, MovieCellViewModel> {
         let nib = UINib(nibName: "MovieCell", bundle: nil)
         let cellRegistration = UICollectionView.CellRegistration<MovieCell, MovieCellViewModel>.init(cellNib: nib) { cell, _, item in
             cell.configure(model: item)
