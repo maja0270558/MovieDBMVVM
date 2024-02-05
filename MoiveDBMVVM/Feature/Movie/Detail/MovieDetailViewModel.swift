@@ -18,9 +18,7 @@ extension MovieDetailViewModel {
     }
     
     class Output {
-        @Published var image: String?
-        @Published var title: String = ""
-        @Published var overview: String = ""
+        @Published var detail: MovieDetail?
     }
 }
 
@@ -31,6 +29,7 @@ class MovieDetailViewModel: ViewModelType {
     var input: Input = .init()
     var output: Output = .init()
     var fetchMovieId: Int
+    
     private(set) var cancellables: Set<AnyCancellable> = .init()
     private(set) var requestCancellable: AnyCancellable?
     
@@ -67,9 +66,7 @@ class MovieDetailViewModel: ViewModelType {
             }
 
             if let success = result.success {
-                self.output.title = success.originalTitle
-                self.output.overview  = success.overview
-                self.output.image = success.backdropPath
+                self.output.detail = success
             }
         }
     }

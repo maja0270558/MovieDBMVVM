@@ -44,6 +44,7 @@
 		D8D4F69B2B68D22F0053DD9C /* MovieDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8D4F6992B68D22F0053DD9C /* MovieDetailViewController.xib */; };
 		D8D4F69D2B68D2450053DD9C /* MovieDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D4F69C2B68D2450053DD9C /* MovieDetailViewModel.swift */; };
 		D8D4F69F2B68E5AB0053DD9C /* MovieDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D4F69E2B68E5AB0053DD9C /* MovieDetails.swift */; };
+		D8D4F6A12B708B450053DD9C /* MovieDetailViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D4F6A02B708B450053DD9C /* MovieDetailViewModelTest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -93,6 +94,7 @@
 		D8D4F6992B68D22F0053DD9C /* MovieDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MovieDetailViewController.xib; sourceTree = "<group>"; };
 		D8D4F69C2B68D2450053DD9C /* MovieDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailViewModel.swift; sourceTree = "<group>"; };
 		D8D4F69E2B68E5AB0053DD9C /* MovieDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetails.swift; sourceTree = "<group>"; };
+		D8D4F6A02B708B450053DD9C /* MovieDetailViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailViewModelTest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,6 +144,7 @@
 			isa = PBXGroup;
 			children = (
 				D806B45A2B47C086009B843B /* MovieViewModelTest.swift */,
+				D8D4F6A02B708B450053DD9C /* MovieDetailViewModelTest.swift */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -402,6 +405,7 @@
 				D83DFDFC2B56367000DC4C25 /* MovieList.swift in Sources */,
 				D806B4422B3A9C37009B843B /* EndpointTest.swift in Sources */,
 				D806B45B2B47C086009B843B /* MovieViewModelTest.swift in Sources */,
+				D8D4F6A12B708B450053DD9C /* MovieDetailViewModelTest.swift in Sources */,
 				D83DFDF02B51049D00DC4C25 /* PublisherSpy.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -17,6 +17,9 @@ class MovieDetailViewController: UIViewController {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var overview: UILabel!
     @IBOutlet weak var image: UIImageView!
+    @IBOutlet weak var releaseDate: UILabel!
+    @IBOutlet weak var popularity: UILabel!
+    @IBOutlet weak var language: UILabel!
     
     let viewModel: MovieDetailViewModel
     private(set) var cancellables: Set<AnyCancellable> = .init()
@@ -38,27 +41,19 @@ class MovieDetailViewController: UIViewController {
     }
     
     func bind() {
-        viewModel.output.$title
+        viewModel.output.$detail
             .receive(on: queue)
             .sink { [weak self] value in
-                self?.titleLabel.text = value
+                guard let self = self else { return }
+                guard let detail = value else { return }
+                self.releaseDate.text = detail.releaseDate
+                self.popularity.text = "\(detail.popularity)"
+                self.language.text = detail.originalLanguage
+                self.titleLabel.text = detail.originalTitle
+                self.imageLoader.loadImage(detail.backdropPath, self.image)
+                self.overview.text = detail.overview
             }
             .store(in: &cancellables)
         
-        viewModel.output.$image
-            .receive(on: queue)
-            .sink { [weak self] value in
-                self?.imageLoader.loadImage(value ?? "", self!.image)
-            }
-            .store(in: &cancellables)
-        
-        viewModel.output.$overview
-            .receive(on: queue)
-            .sink { [weak self] value in
-                self?.overview.text = value
-            }
-            .store(in: &cancellables)
     }
-
-    
 }
