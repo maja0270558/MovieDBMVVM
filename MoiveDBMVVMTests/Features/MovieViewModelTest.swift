@@ -26,7 +26,6 @@ final class MovieViewModelTest: XCTestCase {
 
     func testBadConnection() {
         let viewModel = makeSUT {
-            $0.mainQueue = .immediate
             $0.reachability = .unsatisfied
         }
 

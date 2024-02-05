@@ -12,6 +12,8 @@ import XCTest
 
 final class MovieDetailViewModelTest: XCTestCase {
     var cancellabble = Set<AnyCancellable>()
+    let mockMovieID = 0
+    var counter = 0
     
     func makeSUT(id: Int, _ updateValuesForOperation: (inout DependencyValues) -> Void) -> MovieDetailViewModel {
         let viewModel = withDependencies {
@@ -23,5 +25,64 @@ final class MovieDetailViewModelTest: XCTestCase {
         return viewModel
     }
 
+    
+    
+    func testBadConnection() {
+        let viewModel = makeSUT(id: mockMovieID) {
+            $0.reachability = .unsatisfied
+        }
+
+        let detail = viewModel.output.$detail.spy(&cancellabble)
+        let alert = viewModel.output.alertMessage.eraseToAnyPublisher().spy(&cancellabble)
+
+        viewModel.input.viewDidLoad()
+        XCTAssertEqual(detail.values, [nil])
+        XCTAssertEqual(alert.values, ["The internet is down :["])
+    }
+
+    func testLoadMovieDetailShouldInvokeOnlyOnce() {
+        let viewModel = makeSUT(id: mockMovieID) {
+            $0.api.override(route: .movie(.detail(id: mockMovieID))) {
+                self.counter += 1
+                return try OK(MovieDetail.mock)
+            }
+        }
+
+        viewModel.input.viewDidLoad()
+        XCTAssertEqual(counter, 1)
+    }
+
+    func testParsingFail() {
+        let viewModel = makeSUT(id: mockMovieID) {
+            $0.api.override(route: .movie(.detail(id: mockMovieID))) {
+                try OK(
+                    [
+                        "deadbeaf": 0000
+                    ]
+                )
+            }
+        }
+
+        let detail = viewModel.output.$detail.spy(&cancellabble)
+        let alert = viewModel.output.alertMessage.eraseToAnyPublisher().spy(&cancellabble)
+        
+        viewModel.input.viewDidLoad()
+        XCTAssertEqual(detail.values, [nil])
+        XCTAssertEqual(alert.values, ["The data couldn’t be read because it is missing."])
+    }
+
+    func testHappyPath() {
+        let viewModel = makeSUT(id: mockMovieID) {
+            $0.api.override(route: .movie(.detail(id: mockMovieID))) {
+                try OK(
+                    MovieDetail.mock
+                )
+            }
+        }
+
+        let detail = viewModel.output.$detail.spy(&cancellabble)
+        viewModel.input.viewDidLoad()
+        XCTAssertEqual(detail.values.last??.originalTitle, "mock")
+    }
     
 }
