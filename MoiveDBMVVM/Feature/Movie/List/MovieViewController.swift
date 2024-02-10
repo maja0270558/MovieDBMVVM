@@ -41,13 +41,14 @@ class MovieViewController: UIViewController {
     override func loadView() {
         super.loadView()
         setupLayout()
+        configureNavigationBar()
+        configureRefreshControl()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureRefreshControl()
-        viewModel.input.loadMovie()
         binding()
+        viewModel.input.loadMovie()
     }
     
     func binding() {
@@ -81,6 +82,12 @@ class MovieViewController: UIViewController {
                 self.collectionView.refreshControl?.endRefreshing()
             }
             .store(in: &cancellables)
+    }
+    
+    fileprivate func configureNavigationBar() {
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.title = "Now playing"
+        extendedLayoutIncludesOpaqueBars = true
     }
     
     fileprivate func setupLayout() {
