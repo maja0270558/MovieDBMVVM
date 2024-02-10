@@ -14,29 +14,6 @@ final class EndpointTest: XCTestCase {
         XCTAssertEqual(request?.url?.absoluteString, to)
     }
 
-    func testMoviePopularEndpointURLMatch() async {
-        expect(
-            api: .movie(.popular(page: 1)),
-            equalTo: "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1"
-        )
-
-        expect(
-            api: .movie(.popular(page: 2)),
-            equalTo: "https://api.themoviedb.org/3/movie/popular?language=en-US&page=2"
-        )
-    }
-
-    func testMovieUpcommingEndpointURLMatch() async {
-        expect(
-            api: .movie(.upcoming(page: 1)),
-            equalTo: "https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=1"
-        )
-        expect(
-            api: .movie(.upcoming(page: 2)),
-            equalTo: "https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=2"
-        )
-    }
-
     func testMovieNowPlayingEndpointURLMatch() async {
         expect(
             api: .movie(.nowPlaying(page: 1)),

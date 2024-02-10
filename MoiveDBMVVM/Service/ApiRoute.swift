@@ -18,10 +18,6 @@ struct BaseEndpoint: Endpoint {
 extension ApiRoute.MovieEndpoint: Endpoint {
     var path: String {
         switch self {
-        case .popular:
-            return "movie/popular"
-        case .upcoming:
-            return "movie/upcoming"
         case .nowPlaying:
             return "movie/now_playing"
         case .detail(let id):
@@ -31,7 +27,7 @@ extension ApiRoute.MovieEndpoint: Endpoint {
 
     var query: [URLQueryItem]? {
         switch self {
-        case .popular(let page), .upcoming(let page), .nowPlaying(let page):
+        case .nowPlaying(let page):
             return [
                 URLQueryItem(name: "language", value: "en-US"),
                 URLQueryItem(name: "page", value: "\(page)")
@@ -52,8 +48,6 @@ extension ApiRoute.MovieEndpoint: Endpoint {
 public enum ApiRoute: Equatable {
     case movie(MovieEndpoint)
     public enum MovieEndpoint: Equatable, Sendable {
-        case popular(page: Int)
-        case upcoming(page: Int)
         case nowPlaying(page: Int)
         case detail(id: Int)
     }

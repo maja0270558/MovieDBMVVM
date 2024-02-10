@@ -257,13 +257,21 @@
 		D8D4F6A42B7093D60053DD9C /* List */ = {
 			isa = PBXGroup;
 			children = (
+				D8D4F6A52B7099920053DD9C /* Cell */,
 				D806B44D2B440412009B843B /* MovieViewModel.swift */,
 				D806B4492B4403FE009B843B /* MovieViewController.swift */,
+			);
+			path = List;
+			sourceTree = "<group>";
+		};
+		D8D4F6A52B7099920053DD9C /* Cell */ = {
+			isa = PBXGroup;
+			children = (
 				D83DFDFD2B576DFA00DC4C25 /* MovieCell.swift */,
 				D8D4F6952B68C82B0053DD9C /* MovieCellViewModel.swift */,
 				D83DFDFE2B576DFA00DC4C25 /* MovieCell.xib */,
 			);
-			path = List;
+			path = Cell;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
