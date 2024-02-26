@@ -45,6 +45,7 @@
 		D8D4F69F2B68E5AB0053DD9C /* MovieDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D4F69E2B68E5AB0053DD9C /* MovieDetails.swift */; };
 		D8D4F6A12B708B450053DD9C /* MovieDetailViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D4F6A02B708B450053DD9C /* MovieDetailViewModelTest.swift */; };
 		D8D4F6A32B708E760053DD9C /* MovieDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D4F6A22B708E760053DD9C /* MovieDetail.swift */; };
+		D8D4F6A72B8C50AB0053DD9C /* config.plist in Resources */ = {isa = PBXBuildFile; fileRef = D8D4F6A62B8C50AB0053DD9C /* config.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -95,6 +96,7 @@
 		D8D4F69E2B68E5AB0053DD9C /* MovieDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetails.swift; sourceTree = "<group>"; };
 		D8D4F6A02B708B450053DD9C /* MovieDetailViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailViewModelTest.swift; sourceTree = "<group>"; };
 		D8D4F6A22B708E760053DD9C /* MovieDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetail.swift; sourceTree = "<group>"; };
+		D8D4F6A62B8C50AB0053DD9C /* config.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = config.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -195,6 +197,7 @@
 				D8AB893A2B315F9200359268 /* Assets.xcassets */,
 				D8AB893C2B315F9200359268 /* LaunchScreen.storyboard */,
 				D8AB893F2B315F9200359268 /* Info.plist */,
+				D8D4F6A62B8C50AB0053DD9C /* config.plist */,
 				D8D4F68F2B61065B0053DD9C /* main.swift */,
 			);
 			path = MoiveDBMVVM;
@@ -369,6 +372,7 @@
 				D83DFE002B576DFA00DC4C25 /* MovieCell.xib in Resources */,
 				D8AB893E2B315F9200359268 /* LaunchScreen.storyboard in Resources */,
 				D8AB893B2B315F9200359268 /* Assets.xcassets in Resources */,
+				D8D4F6A72B8C50AB0053DD9C /* config.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
