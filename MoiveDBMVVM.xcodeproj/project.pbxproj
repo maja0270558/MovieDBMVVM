@@ -159,13 +159,13 @@
 			path = Protocol;
 			sourceTree = "<group>";
 		};
-		D83DFDF82B5635CA00DC4C25 /* Mock */ = {
+		D83DFDF82B5635CA00DC4C25 /* FakeModel */ = {
 			isa = PBXGroup;
 			children = (
 				D83DFDFB2B56367000DC4C25 /* MovieList.swift */,
 				D8D4F6A22B708E760053DD9C /* MovieDetail.swift */,
 			);
-			path = Mock;
+			path = FakeModel;
 			sourceTree = "<group>";
 		};
 		D8AB89252B315F9200359268 = {
@@ -206,7 +206,7 @@
 		D8AB89472B315F9300359268 /* MoiveDBMVVMTests */ = {
 			isa = PBXGroup;
 			children = (
-				D83DFDF82B5635CA00DC4C25 /* Mock */,
+				D83DFDF82B5635CA00DC4C25 /* FakeModel */,
 				D806B4592B47C071009B843B /* Features */,
 				D806B4412B3A9C37009B843B /* EndpointTest.swift */,
 				D83DFDEF2B51049D00DC4C25 /* PublisherSpy.swift */,

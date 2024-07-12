@@ -12,7 +12,7 @@ import XCTest
 
 final class MovieDetailViewModelTest: XCTestCase {
     var cancellabble = Set<AnyCancellable>()
-    let mockMovieID = 0
+    let fakeMovieID = 0
     var counter = 0
     
     func makeSUT(id: Int, _ updateValuesForOperation: (inout DependencyValues) -> Void) -> MovieDetailViewModel {
@@ -28,7 +28,7 @@ final class MovieDetailViewModelTest: XCTestCase {
     
     
     func testBadConnection() {
-        let viewModel = makeSUT(id: mockMovieID) {
+        let viewModel = makeSUT(id: fakeMovieID) {
             $0.reachability = .unsatisfied
         }
 
@@ -41,10 +41,10 @@ final class MovieDetailViewModelTest: XCTestCase {
     }
 
     func testLoadMovieDetailShouldInvokeOnlyOnce() {
-        let viewModel = makeSUT(id: mockMovieID) {
-            $0.api.override(route: .movie(.detail(id: mockMovieID))) {
+        let viewModel = makeSUT(id: fakeMovieID) {
+            $0.api.override(route: .movie(.detail(id: fakeMovieID))) {
                 self.counter += 1
-                return try OK(MovieDetail.mock)
+                return try OK(MovieDetail.fake)
             }
         }
 
@@ -53,8 +53,8 @@ final class MovieDetailViewModelTest: XCTestCase {
     }
 
     func testParsingFail() {
-        let viewModel = makeSUT(id: mockMovieID) {
-            $0.api.override(route: .movie(.detail(id: mockMovieID))) {
+        let viewModel = makeSUT(id: fakeMovieID) {
+            $0.api.override(route: .movie(.detail(id: fakeMovieID))) {
                 try OK(
                     [
                         "deadbeaf": 0000
@@ -72,17 +72,17 @@ final class MovieDetailViewModelTest: XCTestCase {
     }
 
     func testHappyPath() {
-        let viewModel = makeSUT(id: mockMovieID) {
-            $0.api.override(route: .movie(.detail(id: mockMovieID))) {
+        let viewModel = makeSUT(id: fakeMovieID) {
+            $0.api.override(route: .movie(.detail(id: fakeMovieID))) {
                 try OK(
-                    MovieDetail.mock
+                    MovieDetail.fake
                 )
             }
         }
 
         let detail = viewModel.output.$detail.spy(&cancellabble)
         viewModel.input.viewDidLoad()
-        XCTAssertEqual(detail.values.last??.originalTitle, "mock")
+        XCTAssertEqual(detail.values.last??.originalTitle, "fake")
     }
     
 }

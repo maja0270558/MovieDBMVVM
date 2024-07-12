@@ -15,7 +15,7 @@ private enum ApiClientKey: DependencyKey {
 
 private enum ImageFetcherKey: DependencyKey {
     static let liveValue: ImageFetcherClient = .live
-    static var testValue: ImageFetcherClient = .mock
+    static var testValue: ImageFetcherClient = .fake
 }
 
 private enum ReachabilityClientKey: DependencyKey {

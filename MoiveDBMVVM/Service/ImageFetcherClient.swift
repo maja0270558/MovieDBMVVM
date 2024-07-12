@@ -24,7 +24,7 @@ extension ImageFetcherClient {
         NukeExtensions.loadImage(with: request, options: options, into: imageView)
     }
     
-    static let mock: Self = .init { url, imageView in
+    static let fake: Self = .init { url, imageView in
         imageView.image = UIImage()
     }
 }

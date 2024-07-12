@@ -9,13 +9,13 @@ import Foundation
 @testable import MoiveDBMVVM
 
 extension MovieDetail {
-    static let mock: Self = .init(adult: false,
-                                  backdropPath: "mock path",
+    static let fake: Self = .init(adult: false,
+                                  backdropPath: "fake path",
                                   id: 0,
                                   originalLanguage: "en",
-                                  originalTitle: "mock",
-                                  overview: "mock overview",
+                                  originalTitle: "fake",
+                                  overview: "fake overview",
                                   popularity: 1000,
-                                  posterPath: "mock poster path",
+                                  posterPath: "fake poster path",
                                   releaseDate: "2024/01/01")
 }

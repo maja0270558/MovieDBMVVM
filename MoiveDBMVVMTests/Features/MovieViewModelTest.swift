@@ -43,7 +43,7 @@ final class MovieViewModelTest: XCTestCase {
         let viewModel = makeSUT {
             for page in 1 ... 10 {
                 $0.api.override(route: .movie(.nowPlaying(page: page))) {
-                    try OK(MovieList.mock(page: page))
+                    try OK(MovieList.fake(page: page))
                 }
             }
         }
@@ -60,7 +60,7 @@ final class MovieViewModelTest: XCTestCase {
         let viewModel = makeSUT {
             for page in 1 ... 10 {
                 $0.api.override(route: .movie(.nowPlaying(page: page))) {
-                    try OK(MovieList.mock(page: page))
+                    try OK(MovieList.fake(page: page))
                 }
             }
         }
@@ -78,7 +78,7 @@ final class MovieViewModelTest: XCTestCase {
             for page in 1 ... 2 {
                 $0.api.override(route: .movie(.nowPlaying(page: page))) {
                     self.counter += 1
-                    return try OK(MovieList.mock(page: page))
+                    return try OK(MovieList.fake(page: page))
                 }
             }
         }
@@ -94,7 +94,7 @@ final class MovieViewModelTest: XCTestCase {
         let viewModel = makeSUT {
             $0.api.override(route: .movie(.nowPlaying(page: 1))) {
                 self.counter += 1
-                return try OK(MovieList.mock(page: 1))
+                return try OK(MovieList.fake(page: 1))
             }
         }
 
